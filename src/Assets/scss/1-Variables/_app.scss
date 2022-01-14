@@ -1,0 +1,123 @@
+$font-family: 'Roboto', cursive !default;
+
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-bold: 600 !default;
+$font-size-base: .875rem !default;
+$font-size-lg: 1rem !default;
+$font-size-sm: .75rem !default;
+$headings-font-weight: 400 !default;
+
+$theme-color: #001529;
+
+$color-text-dark: #232323;
+
+$color-title: #232323;
+
+$color-content: rgba(0, 0, 0, .5);
+
+// Spacer
+$spacer: 1rem !default;
+
+$spacers: (
+        0: 0,
+        1: ($spacer * .25),
+        2: ($spacer * .5),
+        3: $spacer,
+        4: ($spacer * 1.5),
+        5: ($spacer * 3),
+        6: ($spacer * 4.5),
+        7: ($spacer * 6)
+) !default;
+
+// Grid breakpoints
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px,
+        xxl: 1440px
+) !default;
+
+$grid-breakpoints-xs: 0 !default;
+$grid-breakpoints-sm: 576px !default;
+$grid-breakpoints-md: 768px !default;
+$grid-breakpoints-lg: 992px !default;
+$grid-breakpoints-xl: 1200px !default;
+$grid-breakpoints-xxl: 1400px !default;
+$grid-breakpoints-xxxl: 1600px !default;
+
+// Grid containers
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1200px,
+        xxl: 1440px,
+        xxxl: 1600px
+) !default;
+
+// Theme colors
+$blue: #5b7dff !default;
+$red: #f44455 !default;
+$yellow: #fcc100 !default;
+$green: #5fc27e !default;
+$cyan: #47BAC1 !default;
+$pink: #a180da !default;
+$white: white !default;
+$light-indigo: #3f51b5 !default;
+
+// Social colors
+$social-colors: (
+        "facebook": #3b5998,
+        "twitter": #1da1f2,
+        "google": #dc4e41,
+        "youtube": #f00,
+        "vimeo": #1ab7ea,
+        "dribbble": #ea4c89,
+        "github": #181717,
+        "instagram": #e4405f,
+        "pinterest": #bd081c,
+        "flickr": #0063dc,
+        "bitbucket": #0052cc,
+        "indigo": $light-indigo
+) !default;
+
+$border-color: #DEE2E6 !default;
+
+$sidebar-width: 260px;
+$sidebar-animation-duration: .3s;
+
+$gradients-map: () !default;
+$gradients-map: map-merge((
+        warning: linear-gradient(60deg, #ffa726, #fb8c00),
+        success: linear-gradient(60deg, #66bb6a, #43a047),
+        danger: linear-gradient(60deg, #ef5350, #e53935),
+        info: linear-gradient(60deg, #26c6da, #00acc1),
+        indigo: linear-gradient(60deg, #3F51B5, #3c4dac)
+), $gradients-map);
+
+$shadows-map: () !default;
+$shadows-map: map-merge((
+        warning: (0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(255, 152, 0, .4)),
+        success: (0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(76, 175, 80, .4)),
+        danger: (0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(244, 67, 54, .4)),
+        info: (0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(0, 172, 193, .4)),
+        indigo: (0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(0, 172, 193, .4))
+), $shadows-map);
+
+:root {
+  --size_per_lines-timeline: 100px;
+}
+
+@keyframes animation-push-right-to-left {
+  0% {
+    opacity: 0;
+    margin-left: -280px;
+  }
+  100% {
+    opacity: 100;
+    margin-left: 0;
+  }
+}

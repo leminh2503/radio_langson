@@ -1,0 +1,92 @@
+.e-header-row {
+  .e-header-cells {
+    cursor: pointer;
+
+    &:hover {
+      .selected-icon {
+        display: unset !important;
+        background-color: white;
+        opacity: 0.5;
+      }
+    }
+
+    .selected-schedule {
+      .selected-icon {
+        display: unset !important;
+        opacity: 1 !important;
+        transition: 0.2s;
+      }
+    }
+
+  }
+}
+
+td[role='gridcell'] {
+  &:hover {
+    background-color: #e0e0e0 !important;
+  }
+
+  background-color: #fafafa !important;
+}
+
+.e-header-cells {
+  position: relative;
+}
+
+.e-header-cells.e-current-day {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.e-quick-popup-wrapper.e-device.e-lib.e-popup.e-control.e-popup-open {
+  .e-close.e-control.e-btn.e-lib.e-flat.e-round.e-small.e-icon-btn {
+    margin-right: unset;
+    order: unset;
+  }
+}
+
+.e-quick-popup-wrapper.e-device.e-lib.e-popup.e-control.e-popup-open {
+  position: absolute;
+  top: 50% !important;
+  left: 50% !important;
+  margin-right: -50% !important;
+  transform: translate(-50%, -50%) !important;
+  height: unset !important;
+  width: 50%;
+  max-height: 240px !important;
+  max-width: 365px !important;
+  animation: none !important;
+}
+
+.e-subject-wrap {
+  padding-top: unset !important;
+}
+
+.e-quick-popup-wrapper.e-device {
+  height: unset;
+}
+
+.e-resource-icon::before {
+  content: "\e607" !important;
+}
+
+.e-lock-program, .e-ban-program {
+  display: flex !important;
+  justify-content: center;
+  color: white;
+}
+
+.e-btn-icon {
+  color: white;
+}
+
+.schedule-cell-dimension.e-schedule .e-vertical-view .e-time-cells-wrap table td, .schedule-cell-dimension.e-schedule .e-vertical-view .e-work-cells {
+  height: var(--size_per_lines-timeline);
+}
+
+.e-event-resize, .e-appointment.e-lib.e-draggable {
+  cursor: pointer !important;
+}
+
+.e-new-event {
+  display: none !important;
+}

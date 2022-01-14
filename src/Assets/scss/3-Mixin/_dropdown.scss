@@ -1,0 +1,14 @@
+.dropdown-menu.show {
+  animation: fadeIn .3s;
+}
+
+.ant-dropdown-menu-item {
+  svg[data-icon='folder'] {
+    width: 18px;
+    height: 18px;
+
+    path {
+      fill: #95C531;
+    }
+  }
+}

@@ -1,0 +1,233 @@
+.equipment-management {
+  animation-duration: 1s;
+  animation-name: fadeIn;
+  height: calc(100vh - 70px);
+
+  .ant-table-cell {
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .equipment-management_sidebar {
+    height: 100%;
+    background-color: white;
+
+    svg[data-icon='map-marker-alt'] {
+      width: 18px;
+      height: 18px;
+      margin-right: 5px;
+
+      path {
+        fill: #07bc0c !important;
+      }
+    }
+
+    @media (max-width: $grid-breakpoints-md) {
+      position: absolute;
+      height: 100%;
+      background-color: white;
+      z-index: 999;
+      top: 0;
+    }
+
+    @media screen and (max-width: $grid-breakpoints-md) {
+      animation-name: animation-push-right-to-left;
+      animation-duration: 0.6s;
+    }
+
+  }
+
+  .sidebar {
+    height: calc(100% - 39px);
+    z-index: 3;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow: auto;
+    margin-top: 5px;
+    width: 280px;
+  }
+
+}
+
+.equipment-management_size-content {
+  background-color: white;
+  @media (max-width: 769px) {
+    min-width: 100%;
+  }
+  width: calc(100% - 290px);
+  padding: 15px;
+  animation-duration: 1s;
+  animation-name: fadeIn;
+
+  .ant-input-search-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (max-width: 915px) {
+    .ant-input-group-wrapper {
+      width: 100% !important;
+      margin-top: .5rem !important;
+    }
+  }
+
+  .ant-table-body {
+    @media (min-width: 0px) {
+      max-height: calc(100vh - 260px) !important;
+    }
+    @media (min-width: 769px) {
+      max-height: calc(100vh - 265px) !important;
+    }
+    @media (min-width: 805px) {
+      max-height: calc(100vh - 225px) !important;
+    }
+    @media (min-width: 900px) {
+      max-height: calc(100vh - 285px) !important;
+    }
+    @media (min-width: 1046px) {
+      max-height: calc(100vh - 255px) !important;
+    }
+    //@media (min-width: 1267px) {
+    //  max-height: calc(100vh - 252px) !important;
+    //}
+  }
+
+  .display-options-right {
+    .control-view {
+      max-width: 100%;
+
+      @media (max-width: 475px) {
+        margin-right: 0 !important;
+      }
+
+      @media (min-width: 476px) {
+        width: 100%;
+      }
+
+      .display-title {
+        margin-left: 0.5rem;
+        min-width: 50px;
+      }
+
+      .ant-select-selection-item {
+        display: flex;
+        align-items: center;
+      }
+
+    }
+
+    @media screen and (max-width: 1150px) {
+      width: 100%;
+      padding-top: 0.5rem;
+      .control-view {
+        margin-left: 0;
+
+        .display-title {
+          margin-left: 0;
+        }
+      }
+    }
+
+    @media screen and (max-width: 475px) {
+      flex-direction: column;
+      .control-view {
+        .display-title {
+          min-width: 63px
+        }
+      }
+      .search-and-filter {
+        margin-left: 0 !important;
+        margin-top: 0.5rem;
+      }
+    }
+
+    .search-and-filter {
+      max-width: 100%;
+    }
+
+    @media screen and (max-width: 1111px) {
+      width: 100%;
+      padding-top: 0.5rem;
+      .search-and-filter {
+        margin-left: 0;
+      }
+    }
+
+    .ant-input-wrapper.ant-input-group {
+      padding-left: 0.5rem;
+    }
+
+    .ant-select.ant-select-single.ant-select-show-arrow {
+      @media (min-width: 0px) {
+        width: 100%;
+        margin-bottom: 5px;
+      }
+      @media (min-width: 476px) {
+        margin-bottom: 0;
+      }
+      @media (min-width: 1151px) {
+        min-width: 150px;
+      }
+    }
+  }
+
+  .map_container {
+    max-height: 100%;
+    min-height: calc(100vh - 150px);
+    @media (min-width: 0px) {
+      min-height: calc(100vh - 225px);
+    }
+    @media (min-width: 476px) {
+      min-height: calc(100vh - 185px);
+    }
+    @media (min-width: 1151px) {
+      min-height: calc(100vh - 150px);
+    }
+  }
+}
+
+.equipment-management_size-content-user {
+  background-color: white;
+  width: 100%;
+}
+
+.equipment-management_pointer {
+  cursor: pointer;
+}
+
+.equipment-management_table {
+  max-height: calc(100vh - 165px);
+  overflow: auto;
+}
+
+.equipment-management_required-item::after {
+  content: " * ";
+  color: red
+}
+
+
+.modal-body {
+  .radio-image-modal {
+    @media (max-width: $grid-breakpoints-md) {
+      display: none !important;
+    }
+  }
+
+  .content-radio-modal {
+    flex: 1;
+    max-width: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

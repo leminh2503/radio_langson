@@ -1,0 +1,11 @@
+.custom-table {
+  width: 100%;
+
+  th {
+    font-weight: bold !important;
+  }
+
+  .ant-table-row {
+    cursor: pointer
+  }
+}

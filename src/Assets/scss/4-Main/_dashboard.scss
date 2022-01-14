@@ -1,0 +1,110 @@
+.dashboard {
+  background-color: #ecf0f1;
+  padding: 5px;
+  width: 100%;
+  height: calc(100vh - 70px);
+  overflow: auto;
+
+  .box-shadow_custom {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+
+  .box-shadow_map {
+    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+  }
+
+  .dashboard_device_stream_connection {
+    width: 100%;
+    padding: 10px;
+
+    .dashboard_device_stream_connection-box {
+      &:hover {
+        background-color: rgba(17, 49, 231, 0.2);
+        border-radius: 5px;
+      }
+
+      @media (min-width: 992px) {
+        flex: 0 0 20%;
+      }
+
+      .dashboard_device_stream_connection-child {
+        display: flex;
+        align-items: center;
+        height: 120px;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+        //box-shadow: 0 2px 6px 0;
+        background-color: white;
+
+        .dashboard_device_stream_connection-text {
+          padding-left: 10px;
+          width: 70%;
+        }
+
+        .dashboard_device_stream_connection-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30%;
+          height: 85%;
+
+          svg {
+            width: 50px;
+            height: 50px;
+          }
+        }
+      }
+    }
+
+    svg[data-icon='play-circle'] {
+      path {
+        fill: green;
+      }
+    }
+
+    svg[data-icon='warning'] {
+      path {
+        fill: #FFC107;
+      }
+    }
+
+    svg[data-icon='branches'] {
+      path {
+        fill: #800042;
+      }
+    }
+
+    svg[data-icon='usergroup-add'] {
+      path {
+        fill: #185C98
+      }
+    }
+  }
+
+  .dashboard_map-height {
+    min-height: 100%;
+
+    @media (max-width: 992px) {
+      height: 513px;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .leaflet-popup-content {
+      margin: 12px;
+    }
+  }
+
+  svg[data-icon="user"] {
+    width: 25px;
+    height: 25px;
+    fill: #7a7e7b;
+  }
+
+  svg[data-icon="mobile"] {
+    width: 25px;
+    height: 25px;
+    fill: #415fb7;
+  }
+
+}

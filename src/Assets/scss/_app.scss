@@ -1,0 +1,59 @@
+@import "1-Variables/app";
+
+@import "2-Components/wrapper";
+@import "2-Components/sidebar";
+@import "2-Components/main";
+@import "2-Components/navbar";
+@import "2-Components/content";
+@import "2-Components/footer";
+@import "2-Components/bottom-navigator";
+@import "2-Components/action-bar";
+@import "2-Components/tree-folder";
+@import "2-Components/small-talk";
+@import "2-Components/custom-table";
+@import "2-Components/filter-bar";
+@import "2-Components/custom-calendar";
+@import "2-Components/alert-valid";
+@import "2-Components/custom-tree-select";
+@import "2-Components/player";
+
+@import "3-Mixin/color";
+@import "3-Mixin/font";
+@import "3-Mixin/shape";
+@import "3-Mixin/input";
+@import "3-Mixin/event";
+@import "3-Mixin/button";
+@import "3-Mixin/dropdown";
+@import "3-Mixin/modal";
+@import "3-Mixin/tree";
+@import "3-Mixin/schedule-modules";
+@import "3-Mixin/message";
+@import "3-Mixin/leaflet-map";
+@import "3-Mixin/custom-antd";
+
+@import "4-Main/home";
+@import "4-Main/auth";
+@import "4-Main/equipment-management";
+@import "4-Main/broadcast-calendar";
+@import "4-Main/content-management";
+@import "4-Main/account";
+@import "4-Main/radio-program";
+@import "4-Main/dashboard";
+
+@import '../../../node_modules/@syncfusion/ej2-react-schedule/styles/material.css';
+@import "../../../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-calendars/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-lists/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-popups/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
+
+@import "../../../node_modules/react-contexify/dist/ReactContexify.min.css";
+
+@font-face {
+  font-family: "Baloo Chettan 2";
+  src: url("../font/BalooChettan2-Regular.ttf");
+}

@@ -1,0 +1,92 @@
+.player_base {
+  $icon-color: #185C98;
+  position: fixed;
+  top: 45px;
+  z-index: 9999999;
+  right: 0;
+
+  .title {
+    color: $icon-color;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .setting_spin_button {
+    right: -25px;
+    justify-content: start;
+    padding-left: 5px;
+    width: 40px;
+    height: 40px;
+    transition: 0.2s;
+    background-color: lightgoldenrodyellow;
+
+    &:hover {
+      right: 0;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .spinning_icon.anticon[aria-label='setting'] {
+      animation: loadingCircle 2s infinite linear;
+    }
+  }
+
+  .hidden_player_button {
+    //margin-top: 10px;
+    width: 40px;
+    height: 40px;
+    transition: none;
+  }
+
+  .player_container {
+    justify-content: end;
+    align-items: center;
+    //transition: 0.5s;
+
+    svg {
+      color: $icon-color;
+    }
+
+    &.show {
+      padding: 5px;
+      width: 300px;
+      box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+
+    .player_view {
+      margin: 0 5px;
+      width: 100%;
+      color: $icon-color;
+
+      .player {
+        width: 100%;
+      }
+
+      &.hidden {
+        display: none;
+      }
+
+      .rhap_progress-indicator {
+        background-color: currentColor;
+      }
+
+      .rhap_volume-indicator {
+        background-color: currentColor;
+      }
+
+      .rhap_time {
+        color: $icon-color;
+      }
+
+      svg {
+        color: $icon-color;
+        fill: currentColor;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,31 @@
+.ant-modal-mask {
+  transition: none;
+  animation: none;
+}
+
+.ant-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  .ant-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.modal-body {
+  .rhap_progress-indicator {
+    background-color: #99ccdb;
+  }
+
+  .rhap_progress-filled {
+    background-color: rgba(0, 183, 255, 0.75);
+  }
+
+  //.rhap_controls-section{
+  //  svg {
+  //    color: rgba(57, 51, 51, 0.62);
+  //  }
+  //}
+}

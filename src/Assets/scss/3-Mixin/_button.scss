@@ -1,0 +1,35 @@
+.btn {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+button {
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.btn-primary {
+  background-color: #185C98;
+  border-color: #185C98;
+}
+
+.rhap_play-pause-button {
+  height: 41px !important;
+}
+
+button {
+  &.ant-pagination-item-link {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.ant-picker-ok {
+  width: 100%;
+
+  button {
+    width: 100%;
+  }
+}

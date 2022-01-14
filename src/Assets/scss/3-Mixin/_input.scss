@@ -1,0 +1,18 @@
+::placeholder {
+  color: #ECA2B8 !important;
+}
+
+button {
+  font-family: inherit !important;
+  text-transform: unset !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}

@@ -1,0 +1,410 @@
+.account-management {
+  .account-administrative {
+    padding-top: 5px;
+    animation-name: animation-fade-in;
+    animation-duration: 1s;
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .account-category {
+      padding-top: 5px;
+      animation-name: animation-fade-in;
+      animation-duration: 1s;
+      .between {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+
+
+
+  background-color: white;
+
+  .custom-button-menu {
+    @media (min-width: 769px) {
+      display: none !important;
+    }
+  }
+
+  word-break: break-word;
+  @media (min-width: 0px) {
+    height: calc(100vh - 40px);
+  }
+  @media (min-width: $grid-breakpoints-md) {
+    height: calc(100vh - 70px);
+  }
+  @media (max-width: 900px) {
+    height: calc(100vh - 70px);
+  }
+
+  overflow: auto;
+
+  .item-province {
+    @media (max-width: 600px) {
+      width: 100% !important;
+    }
+  }
+
+  tbody {
+    tr {
+      cursor: pointer;
+    }
+  }
+
+  .account-management_sidebar {
+    justify-content: space-between;
+    height: calc(100vh - 70px);
+    @media (max-width: $grid-breakpoints-md) {
+      position: absolute;
+      background-color: white;
+      z-index: 1001;
+      transition: left $sidebar-animation-duration;
+    }
+    @media (min-width: 0px) {
+      width: 220px;
+    }
+    @media (min-width: 769px) {
+      width: 280px;
+    }
+    overflow: auto;
+    @media screen and (max-width: $grid-breakpoints-md) {
+      animation-name: animation-push-right-to-left;
+      animation-duration: 0.6s;
+    }
+
+  }
+
+  .icon-menu-sidebar {
+    display: none !important;
+    @media screen and (max-width: $grid-breakpoints-md) {
+      display: grid !important;
+    }
+  }
+
+  .account-information {
+    cursor: pointer;
+    border-bottom: 1px solid #e9e9e9;
+  }
+
+  .account-information:hover {
+    cursor: pointer;
+    background: #185C98;
+    color: white;
+  }
+
+  .account-management_tab:hover {
+    cursor: pointer;
+    background: #278dbe;
+    color: white;
+  }
+
+  .account-management_tab {
+    padding: 10px;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    border-bottom: 1px solid #e9e9e9;
+  }
+
+  .change-color {
+    background: #278dbe;
+    color: white;
+  }
+
+
+  .account-management_content {
+    @media (min-width: 0px) {
+      padding: 0 10px;
+      width: 100%;
+    }
+    @media (min-width: 769px) {
+      padding: 0 15px;
+      width: calc(100% - 280px);
+    }
+
+    .general-config {
+      animation-name: animation-fade-in;
+      animation-duration: 1s;
+
+      .ant-divider-inner-text {
+        padding-left: 0;
+        padding-right: 0.5rem;
+      }
+
+      .ant-divider-with-text-left::before {
+        width: 0;
+      }
+
+      .grid-input {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-gap: 5px;
+
+        .grid-input-items {
+          display: grid !important;
+          grid-template-columns: 200px auto;
+          align-items: center !important;
+
+          label {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .grid-select {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-gap: 10px;
+
+        .grid-select-items {
+          display: grid !important;
+          grid-template-columns: 130px 120px;
+          align-items: center;
+
+          label {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  //------------------*animate when open change password*-------------------------//
+
+  .account-management_content_slide-in-fade-in {
+    animation-name: animation-fade-in;
+    animation-duration: 1s;
+  }
+
+  .history-work {
+    padding-top: 5px;
+    animation-name: animation-fade-in;
+    animation-duration: 1s;
+  }
+
+  @keyframes animation-fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  //-------------------------------------------------------------------------------//
+
+  .avatar-user {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .name-user {
+    font-size: 13pt;
+  }
+
+  .permission-user {
+    color: #1da1f2;
+  }
+
+  .custom-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+
+    button {
+      width: 90%;
+    }
+
+    //@media (min-width: 0px) {
+    //  width: 190px;
+    //}
+    //@media (min-width: 769px) {
+    //  width: 250px;
+    //}
+  }
+
+  .table-list-user {
+    .ant-table-body {
+      @media (min-width: 0) {
+        max-height: calc(100vh - 380px) !important;
+      }
+      @media (min-width: 445px) {
+        max-height: calc(100vh - 300px) !important;
+      }
+      @media (min-width: 660px) {
+        max-height: calc(100vh - 270px) !important;
+      }
+      @media (min-width: 769px) {
+        max-height: calc(100vh - 305px) !important;
+      }
+      @media (min-width: 901px) {
+        max-height: calc(100vh - 330px) !important;
+      }
+      @media (min-width: 950px) {
+        max-height: calc(100vh - 300px) !important;
+      }
+      @media (min-width: 1380px) {
+        max-height: calc(100vh - 260px) !important;
+      }
+      overflow: auto;
+    }
+  }
+
+  .item-is-select {
+    background-color: #3b91e0 !important;
+  }
+
+  .change-password-tab {
+    animation-name: animation-fade-in;
+    animation-duration: 1s;
+  }
+
+  .input-change-password {
+    width: 260px;
+  }
+}
+
+.account_required-item::after {
+  content: " * ";
+  color: red
+}
+
+/*----------------------------account-information----------------------------------*/
+.account_information_page {
+  @media (min-width: $grid-breakpoints-md) {
+    margin-top: 1.5rem;
+  }
+  animation-name: animation-fade-in;
+  animation-duration: 1s;
+
+  .icon-menu {
+    display: none;
+  }
+
+  .display-avatar {
+    margin-left: 3rem;
+
+    .avatar-frame {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      .ant-image-mask {
+        height: 150px;
+      }
+    }
+
+    @media screen and (max-width: $grid-breakpoints-md) {
+      width: 100%;
+      margin: 0;
+      justify-content: center;
+      display: flex;
+    }
+  }
+
+  @media screen and (max-width: $grid-breakpoints-md) {
+    .icon-menu {
+      display: inline;
+    }
+
+    .detail-text {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+  }
+
+  .avatar-upload-frame {
+    margin-top: -30px;
+  }
+
+  .avatar-upload {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .display-information {
+    margin-left: 3rem;
+
+    @media (min-width: 0px) {
+      div {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    @media (min-width: $grid-breakpoints-md) {
+      div {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .information-title {
+      font-size: 13pt;
+    }
+
+    .information-display-name {
+      font-size: 14pt;
+      font-weight: bold;
+    }
+
+    @media screen and (max-width: $grid-breakpoints-md) {
+      margin: 1rem 0 0 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .detail-information {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12pt;
+    margin-top: 1rem;
+    @media screen and (max-width: $grid-breakpoints-md) {
+      margin: 0;
+    }
+
+    .detail-information-child {
+      width: 48%;
+      margin-bottom: 1rem;
+      @media screen and (max-width: $grid-breakpoints-md) {
+        width: 100%;
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+
+  .btn-edit-info {
+    display: flex;
+    margin-left: 0.5rem;
+
+    &:hover {
+      path {
+        fill: blue;
+      }
+
+      cursor: pointer;
+    }
+  }
+
+  .general-info {
+    @media (min-width: 0px) {
+      justify-content: center;
+    }
+    @media (min-width: 883px) {
+      justify-content: unset;
+    }
+  }
+}
+

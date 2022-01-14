@@ -1,0 +1,46 @@
+.action-bar {
+  display: flex;
+
+  .sidebar-icon {
+    @media (min-width: 769px) {
+      display: none !important;
+    }
+  }
+
+  .action-bar-title {
+    @media (max-width: 519px) {
+      display: none;
+    }
+    @media (max-width: 915px) {
+      display: none;
+    }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 519px) {
+    width: 100% !important;
+    justify-content: space-around;
+  }
+
+  @media (max-width: 915px) {
+    width: 100% !important;
+    justify-content: space-around;
+  }
+
+  .action-bar_item {
+    @media (min-width: 0) {
+      padding: 0.5rem;
+    }
+    @media (min-width: 915px) {
+      padding: 4px 0;
+    }
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .action-bar_item:hover {
+    background-color: #3598FE;
+  }
+}

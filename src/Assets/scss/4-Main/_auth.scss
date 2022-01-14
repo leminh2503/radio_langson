@@ -1,0 +1,164 @@
+.auth_sign-in {
+  background: #108dc7; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #ef8e38, #108dc7); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #ef8e38, #108dc7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  height: 100vh;
+
+  .sign-in_form {
+    background-color: white;
+    border-radius: 5px;
+    max-width: 450px;
+    padding: 48px;
+    box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.26);
+    animation-duration: 0.5s;
+    animation-name: sign-in_form;
+
+    .sign-in_form-group-size {
+      //height: 90px;
+
+      .sign-in_input {
+        &:focus {
+          box-shadow: unset;
+        }
+
+        //width: 400px;
+        border-top: unset;
+        border-left: unset;
+        border-right: unset;
+        border-radius: 0;
+      }
+    }
+
+    .sign-in_alert-auth {
+      color: red;
+      font-size: 10pt;
+      animation-duration: 0.1s;
+      animation-name: sign-in_alert-auth;
+    }
+
+    .sign-in_icon-show-password {
+      cursor: pointer;
+    }
+
+    .sign-in_button {
+      width: 400px;
+      height: 50px;
+    }
+  }
+
+  @media screen and (max-width: $grid-breakpoints-md) {
+    .sign-in_form {
+      background-color: white;
+      border-radius: 5px;
+      width: 95vw;
+      padding: 48px;
+      box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.26);
+      animation-duration: 0.5s;
+      animation-name: sign-in_form;
+    }
+  }
+
+  .sign-in_forgot-password {
+    color: #1da1f2;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  .sign-in_sign-up {
+    color: #1da1f2;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
+
+@keyframes sign-in_form {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes sign-in_alert-auth {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.auth_forgot-password {
+  background: -webkit-linear-gradient(to left, #ef8e38, #108dc7); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #ef8e38, #108dc7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 100vh;
+
+  .forgot-password_form {
+    background-color: white;
+    border-radius: 5px;
+    max-width: 450px;
+    box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.26);
+    animation-duration: 0.5s;
+    animation-name: sign-in_form;
+
+    .forgot-password_input {
+      &:focus {
+        box-shadow: unset;
+      }
+
+      //width: 400px;
+      border-top: unset;
+      border-left: unset;
+      border-right: unset;
+      border-radius: 0;
+    }
+
+    .forgot-password_icon-show-password {
+      cursor: pointer;
+    }
+
+    .forgot-password_change-button {
+      width: 400px;
+      height: 50px;
+    }
+  }
+
+  @media screen and (max-width: $grid-breakpoints-md) {
+    .forgot-password_form {
+      background-color: white;
+      border-radius: 5px;
+      width: 95vw;
+      box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.26);
+      animation-duration: 0.5s;
+      animation-name: sign-in_form;
+      .forgot-password-title {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+/* Change Auto complete default account styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ef14db;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+}

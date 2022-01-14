@@ -1,0 +1,154 @@
+.radio-program {
+  height: calc(100vh - 70px);
+
+  .icon-menu {
+    @media (min-width: $grid-breakpoints-md) {
+      display: none;
+    }
+  }
+
+  .mask_dropdown {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 800;
+    top: 0;
+  }
+
+  .radio-program_sidebar {
+    height: 100%;
+    padding: 0 5px;
+    background-color: white;
+    width: 280px;
+    overflow: auto;
+
+    @media (max-width: $grid-breakpoints-md) {
+      position: fixed;
+      top: 0;
+      z-index: 10000;
+      height: 100vh;
+      transition: left $sidebar-animation-duration;
+      animation-name: animation-push-right-to-left;
+      animation-duration: 0.6s;
+    }
+
+    .ant-tree.ant-tree-show-line {
+      height: calc(100vh - 154px);
+      @media (max-width: $grid-breakpoints-md) {
+        height: calc(100vh - 85px);
+      }
+      overflow: auto;
+      position: absolute;
+      max-width: 270px;
+      z-index: 800;
+    }
+
+    svg[data-icon='folder'] {
+      width: 18px;
+      height: 18px;
+      fill: #9ACD32
+    }
+
+    .ant-input-search-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .schedule {
+    padding: 5px 10px;
+    background-color: white;
+    width: calc(100% - 280px);
+    border-left: 1px solid #ececec;
+
+    @media (max-width: $grid-breakpoints-md) {
+      width: 100%;
+    }
+
+    .timeline {
+      .e-table-container {
+        height: calc(100vh - 140px);
+        overflow: auto;
+      }
+
+      .droppable-zone {
+        background-color: #ececec !important;
+        cursor: pointer;
+      }
+
+      .header-day-date {
+        justify-content: space-between;
+        align-items: center;
+
+        .header-day-date_left {
+          .day {
+            font-size: 13px;
+          }
+
+          .date {
+            font-size: 16px;
+          }
+
+        }
+
+        .header_day_date-right {
+          svg {
+            width: 25px;
+            height: 25px;
+            @media (max-width: 400px) {
+              width: 20px;
+              height: 20px;
+            }
+          }
+
+          .status {
+
+          }
+
+          .lock-status {
+
+          }
+        }
+      }
+
+      table[role='presentation'] {
+        tbody > tr {
+          td {
+            position: sticky;
+            top: 0;
+            z-index: 799;
+          }
+        }
+
+        tbody > tr ~ tr {
+          td {
+            position: unset;
+            top: unset;
+            z-index: unset;
+          }
+        }
+      }
+
+      .e-left-indent {
+        position: sticky;
+        top: 0
+      }
+    }
+
+    .timeline-disabled {
+      top: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1);
+      overflow: auto;
+    }
+
+    .e-schedule-toolbar-container {
+      display: none;
+    }
+
+  }
+}

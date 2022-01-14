@@ -1,0 +1,274 @@
+.smalltalk-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .smalltalk {
+    max-width: 500px;
+    align-items: center;
+    flex-direction: column;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: auto;
+    position: initial;
+    z-index: 100;
+    margin: 1.75rem auto;
+
+    .page {
+      border: 0;
+      border-radius: .125rem;
+      background: white;
+      box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+      color: #333;
+      padding: 0;
+      margin: .5rem;
+      position: relative;
+      z-index: 0;
+
+      .smalltalk__header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 1rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: 300;
+        font-size: 1.5rem;
+      }
+
+      .content-area {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: relative;
+        flex: 1 1 auto;
+        padding: 1rem;
+
+        > input {
+          background-color: transparent;
+          border: none;
+          border-bottom: 1px solid #ced4da;
+          /* border-right: 1px solid #ced4da; */
+          border-radius: 0px 10px 10px 0px;
+          border-radius: 0;
+          outline: none;
+          box-shadow: none;
+          transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        > input:focus {
+          border-bottom: 2px solid #4285f4;
+          /* border-right: 1px solid #4285f4; */
+          border-radius: 0px 10px 10px 0px;
+        }
+
+        > label {
+          margin-bottom: -2px;
+        }
+      }
+
+      .action-area {
+        padding: 14px 17px;
+      }
+
+      .button-strip {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        padding-top: .75rem;
+        border-top: 1px solid #dee2e6;
+        border-bottom-right-radius: calc(.3rem - 1px);
+        border-bottom-left-radius: calc(.3rem - 1px);
+      }
+
+      > .close-button {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: 14px;
+        z-index: 1;
+        font-size: 1.3rem;
+        font-weight: 600;
+        line-height: 1;
+        color: #000;
+        cursor: pointer;
+        opacity: .5;
+      }
+
+      > .close-button:hover {
+        opacity: 1;
+        color: #3F51B5;
+      }
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #bfbfbf;
+      border-radius: 2px;
+      box-sizing: border-box;
+      color: #444;
+      font: inherit;
+      margin: 0;
+      min-height: 2em;
+      padding: 3px;
+      outline: none;
+    }
+
+    button {
+      font-size: 0.875rem;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      min-height: 2em;
+      min-width: 4em;
+      margin-left: 10px;
+
+      ::-moz-focus-inner {
+        border: 0;
+      }
+
+      :enabled:active {
+        box-shadow: none;
+        text-shadow: none;
+      }
+    }
+
+    button:enabled:focus, input:enabled:focus {
+      transition: border-color 200ms;
+      border-color: rgb(77, 144, 254);
+      outline: none;
+    }
+
+    .progress {
+      display: block;
+      width: 100%;
+    }
+
+  }
+
+}
+
+
+@media only screen and (max-width: 500px) {
+  .smalltalk .page {
+    margin: 1.75rem auto;
+    min-width: 0;
+    border-top-left-radius: .125rem;
+    border-top-right-radius: .125rem;
+  }
+}
+
+// animation
+.smalltalk-background {
+  > .slide-in-top {
+    animation-duration: 0.3s;
+    animation-name: slideInFromTop;
+  }
+
+  > .slide-in-bottom {
+    animation-duration: 0.3s;
+    animation-name: slideInFromBottom;
+  }
+
+  > .slide-in-left {
+    animation-duration: 0.3s;
+    animation-name: slideInFromLeft;
+  }
+
+  > .slide-in-right {
+    animation-duration: 0.3s;
+    animation-name: slideInFromRight;
+  }
+
+  > .slide-fade-in {
+    animation-duration: 0.3s;
+    animation-name: slideFadein;
+  }
+
+  > .slide-fade-out {
+    animation-duration: 0.3s;
+    animation-name: slideFadeout;
+  }
+}
+
+.background-fade-out {
+  animation-duration: 0.3s;
+  animation-name: backgroundFadeout;
+}
+
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideFadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideFadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes backgroundFadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
