@@ -40,7 +40,7 @@ const CreateCalendar = React.memo((props) => {
         setIsLoading(true);
         apiCalendar.createCalendar({
             date_schedule: data.current.date.format("YYYY-MM-DD"),
-            adTree: {
+            ad_tree: {
                 ...adCode.current,
                 title: data.current.title
             }

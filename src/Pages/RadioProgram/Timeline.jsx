@@ -86,7 +86,7 @@ function Timeline(props) {
         selectedCalendar
     } = props;
 
-    const dateSchedule = selectedCalendar?.dateSchedule ?? "";
+    const dateSchedule = selectedCalendar?.date_schedule ?? "";
 
     const selectedProgram = useRef({});
 
@@ -140,10 +140,12 @@ function Timeline(props) {
         }
     };
 
+    console.log(selectedCalendar)
+
     const handleCreateProgram = (dataModal, setIsLoadingModal) => {
         const dataRequest = {
             ...dataModal,
-            broadcastCalendar: selectedCalendar?.id ?? ""
+            id: selectedCalendar?.id ?? ""
         };
         apiProgram.createProgram(dataRequest, (err, res) => {
             if (res) {
@@ -237,7 +239,7 @@ function Timeline(props) {
 
     const handleOpenModalEditProgram = () => {
         closeDialogSchedule();
-        if (selectedProgram.current?.sourceStream?.file) {
+        if (selectedProgram.current?.source_stream?.file) {
             openModalEdit();
         } else {
             openModalEditForward();
@@ -263,10 +265,10 @@ function Timeline(props) {
                 setIsLoadingCalendar(true);
                 apiCalendar.lockCalendar({
                     id: selectedCalendar?.id,
-                    lockStatus: nextLockStatus
+                    lock_status: nextLockStatus
                 }, (err) => {
                     if (!err) {
-                        selectedCalendar.lockStatus = nextLockStatus;
+                        selectedCalendar.lock_status = nextLockStatus;
                         setIsChangedLockStatus(isChangedLockStatus + 1);
                         Notify.success(`${text} chương trình thành công`);
                     }
@@ -284,13 +286,13 @@ function Timeline(props) {
         closeDialogSchedule();
         Modal.confirm({
             title: 'Nhắc nhở',
-            content: `Xác nhận ${selectedProgram?.current.lockStatus === 1 ? 'mở' : 'khóa'} chương trình ${selectedProgram?.current.title}?`,
+            content: `Xác nhận ${selectedProgram?.current.lock_status === 1 ? 'mở' : 'khóa'} chương trình ${selectedProgram?.current.title}?`,
             okText: 'Xác nhận',
             onOk: () => {
                 setIsLoadingCalendar(true);
                 apiProgram.lockProgram({
                     id: selectedProgram.current?.id ?? "",
-                    lock_status: selectedProgram?.current.lockStatus === 1 ? 2 : 1
+                    lock_status: selectedProgram?.current.lock_status === 1 ? 2 : 1
                 }, (err, res) => {
                     if (res) {
                         scheduleObj.current.saveEvent({
@@ -392,7 +394,7 @@ function Timeline(props) {
             okText: 'Xác nhận',
             onOk: () => {
                 setIsLoadingCalendar(true);
-                const func = _liveStatus.includes(selectedProgram.current?.sourceStream ?? "") ? "endLive" : "endEme";
+                const func = _liveStatus.includes(selectedProgram.current?.source_stream ?? "") ? "endLive" : "endEme";
                 apiProgram[func]({
                     id: selectedProgram.current?.id ?? ""
                 }, (err, res) => {
@@ -459,13 +461,26 @@ function Timeline(props) {
     const dataHeaderTemplate = () => {
         const datetime = moment(dateSchedule);
 
-        const calendarLockStatus = selectedCalendar?.lockStatus;
+        const calendarLockStatus = selectedCalendar?.lock_status;
 
         const calendarStatus = selectedCalendar?.status;
 
-        const indexLockStatus = listIcons.findIndex(i => i?.lockStatus === calendarLockStatus);
+        const indexLockStatus = listIcons.findIndex(i => i?.lock_status === calendarLockStatus);
 
         const indexStatus = listIcons.findIndex(i => i?.status === calendarStatus);
+
+        const renderStatus = () => {
+            switch (listIcons[indexStatus]?.status) {
+                case 6:
+                    return true;
+                case 7:
+                    return true;
+                case 8:
+                    return true;
+                default:
+                    return false;
+            }
+        };
 
         return (
             <Row className="header-day-date">
@@ -514,7 +529,7 @@ function Timeline(props) {
                     }
                     <Tooltip title={listIcons[indexStatus]?.title}>
                         <div className="mr-3 row-vertical-center header_day_date-right">
-                            <div className="status">
+                            <div className="status" style={renderStatus() ? {color: "#9acd33"} : {}}>
                                 {
                                     indexStatus > -1 ? listIcons[indexStatus]?.icon : ""
                                 }
@@ -544,7 +559,7 @@ function Timeline(props) {
     const customHeaderQuickPopups = (props) => {
         const visibleButton = !isEmeCalendar && !isDefaultCalendar;
         const listButtonsHeaderQuickPopup =
-            isEmeCalendar || [..._emeStatus, ..._liveStatus].includes(props.sourceStream?.sourceType) ?
+            isEmeCalendar || [..._emeStatus, ..._liveStatus].includes(props.source_stream?.sourceType) ?
                 listButtonsHeaderQuickPopupProgramEmeLiveCalendar({
                     closeDialogSchedule,
                     handleStopProgram: handleStopProgramLiveEme

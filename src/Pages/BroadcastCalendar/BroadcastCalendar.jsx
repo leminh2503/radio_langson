@@ -308,15 +308,6 @@ const BroadcastCalendar = React.memo(() => {
             },
         );
     };
-    useEffect(() => {
-        if (state.isLoading) {
-            if (historyState) {
-                history.replace();
-            }
-            handleGetCalendar();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.isLoading]);
 
     const handleChangeStatusCalendar = (id, user) => {
         Modal.confirm({

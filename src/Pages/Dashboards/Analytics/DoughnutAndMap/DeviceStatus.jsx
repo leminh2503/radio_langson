@@ -13,10 +13,11 @@ const DeviceStatus = React.memo(({data}) => {
         borderWidth: 1,
         backgroundColor: [
             "green",
-            "red",
+            "#286a90",
             "#FDE64B",
             "#8D1EFF",
-            "#c3baba"
+            "#c3baba",
+            "red"
         ],
         borderColor: "transparent"
     }).current;

@@ -1,10 +1,17 @@
-import React, {useEffect, useRef, useState}               from 'react';
-import {Col}                                    from "reactstrap";
-import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet';
-import L                                        from 'leaflet';
+import React, {useEffect, useRef, useState}             from 'react';
+import {Col}                                            from "reactstrap";
+import {MapContainer, Marker, Popup, TileLayer, useMap} from 'react-leaflet';
+import L                                                from 'leaflet';
+import apiMap                                           from '../../Api/Map/Map';
 import 'react-leaflet-fullscreen-control';
-import apiUser                  from "../../Api/User/User"
+
 delete L.Icon.Default.prototype._getIconUrl;
+
+const ChangeView = ({center, zoom}) => {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+};
 
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -17,17 +24,16 @@ const Map = React.memo(({data: dataDevices, setSelectedDevice}) => {
         latitude: 21.0115037,
         longitude: 105.8090587
     });
-    const position = [location.latitude, location.longitude]
+    const position = [location.latitude, location.longitude];
     useEffect(() => {
-        apiUser.getMe( (err, res) => {
+        apiMap.getMap((err, res) => {
             if (res) {
-                setLocation(res.administrativeCode)
+                setLocation(
+                    res.data[0]
+                );
             }
-         })
-    },[])
-    const zoom = useRef({
-        default: 9
-    }).current;
+        });
+    }, []);
 
     const selectDeviceOnMap = () => {
         const allMarkers = document.querySelectorAll("img.leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive");
@@ -62,46 +68,31 @@ const Map = React.memo(({data: dataDevices, setSelectedDevice}) => {
         options: {}
     });
 
-    const redIcon = new LeafIcon({
-        iconUrl:
-            "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF0000&chf=a,s,ee00FFFF"
-    });
-    const goldIcon = new LeafIcon({
-        iconUrl:
-            "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFDE00&chf=a,s,ee00FFFF"
-    });
-
-    const greenIcon = new LeafIcon({
-        iconUrl:
-            "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2BFF00&chf=a,s,ee00FFFF"
-    });
-    const violetIcon = new LeafIcon({
-        iconUrl:
-            "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|AF00FF&chf=a,s,ee00FFFF"
-    });
-
-    const blackIcon = new LeafIcon({
-        iconUrl:
-            "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|BDBDBD&chf=a,s,ee00FFFF"
-    });
+    const renderColor = (color) => {
+        return new LeafIcon({
+            iconUrl:
+                `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${color}&chf=a,s,ee00FFFF`
+        });
+    };
 
     const renderIcon = (statusColor) => {
         switch (statusColor) {
+            case -1:
+                return "c3baba";
             case 0:
-                return greenIcon;
+                return "286a90";
             case 1:
-                return goldIcon;
+                return "4b8102";
             case 2:
-                return redIcon;
+                return "fde64b";
             case 3:
-                return violetIcon;
-            case 4:
-                return blackIcon;
-            default: return null;
+                return "9b7bff";
+            case 99:
+                return "d0515b";
+            default:
+                return null;
         }
     };
-
-    const random = Math.floor(Math.random() * 4) + 1;
 
     return (
         <>
@@ -116,13 +107,17 @@ const Map = React.memo(({data: dataDevices, setSelectedDevice}) => {
                         zoom={zoom.default}
                         fullscreenControl
                     >
+                        <ChangeView
+                            center={[location.latitude, location.longitude]}
+                            zoom={zoom.default}
+                        />
                         <TileLayer url="https://g1.cloudgis.vn/services/rest/maps/roadmap/tile/{z}/{x}/{y}.png"/>
                         {(dataDevices || []).map(device =>
                             device?.latitude && device?.longitude &&
                             <Marker
                                 position={[device.latitude, device.longitude]}
                                 key={device.id}
-                                icon={renderIcon(random)}
+                                icon={renderColor(renderIcon(device?.status))}
                             >
                                 <Popup>
                                     <div className="d-flex justify-content-between">

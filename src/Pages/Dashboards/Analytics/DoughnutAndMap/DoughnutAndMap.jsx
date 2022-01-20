@@ -11,8 +11,6 @@ import Users                    from "./Users";
 import { useState } from 'react';
 import apiMap                   from "../../../../Api/Map/Map"
 import apiUser                  from "../../../../Api/User/User"
-import Notify from '../../../../Utils/Notify/Notify';
-import { isBuffer } from 'lodash';
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -34,6 +32,9 @@ const DoughnutAndMap = React.memo(({data}) => {
 
     const history = useHistory();
 
+    const [value, setValue] = useState({
+        data: {}
+    })
     const zoom = useRef({
         default: 8,
     }).current;
@@ -47,16 +48,9 @@ const DoughnutAndMap = React.memo(({data}) => {
         }
         apiMap.getMap((err, res) => {
             if (res) {
-                setLocation(prev => {
-                    if(res.data.length === 0){
-                        return prev
-                    } else {
-                        return res.data[0]
-                    }
-                })
-            }
-            if (err) {
-                return Notify.error(`${err}`)
+                setLocation(
+                     res.data[0]
+                )
             }
          })
     }, []);
