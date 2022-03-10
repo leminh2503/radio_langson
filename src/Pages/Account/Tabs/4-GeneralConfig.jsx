@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState}  from 'react';
 import {Divider, Input, Button, Form, Row, Popconfirm, Modal, Col} from "antd";
 import {FormGroup, Label}                                          from "reactstrap";
-import {useDispatch, useSelector}                                 from "react-redux";
+import {useDispatch, useSelector}                                  from "react-redux";
 import {
     AuditOutlined,
     MenuOutlined,
@@ -17,9 +17,6 @@ import apiConfig     from "../../../Api/Config/Config";
 import apiChannel    from "../../../Api/Channel/Channel";
 import apiCalendar   from "../../../Api/Calendar/Calendar";
 import CustomTable   from "../../../Components/CustomTag/CustomTable";
-import apiThread     from "../../../Api/Thread/Thread";
-import apiMap        from "../../../Api/Map/Map";
-import { isBuffer } from 'lodash';
 
 
 // const CustomSelect = React.memo(({listChannel, value, onChange}) => {
@@ -51,31 +48,41 @@ const CustomInput = React.memo(({value, onChange}) => {
         />
     );
 });
-const ModalCreateAd = ({onOk, onCancel, visible}) => {
+const ModalCreateAd = ({state, onOk, onCancel, visible}) => {
     const _coordinatesFields = useRef([
         {key: 'name', title: 'Tên Kênh'},
         {key: 'url', title: 'Link tiếp sóng'}
     ]).current;
 
     const [loading, setLoading] = useState(false);
-    const [name, setName] = useState('')
-    const [url, setUrl] = useState('')
+    const [name, setName] = useState('');
+    const [url, setUrl] = useState('');
 
     const onChangeName = e => {
-        setName(e.target.value)
-    }
+        setName(e.target.value);
+    };
 
     const onChangeUrl = e => {
-        setUrl(e.target.value)
-    }
+        setUrl(e.target.value);
+    };
 
     const handleBeforeOk = () => {
-        if(name.trim().length === 0){
-            return Notify.error(`Tên Kênh không được để trống`)
+        if (name.trim().length === 0) {
+            return Notify.error(`Tên kênh không được để trống`);
         }
-        if(url.trim().length === 0){
-           return Notify.error(`Link tiếp sóng không được để trống`)
+        if (url.trim().length === 0) {
+            return Notify.error(`Link tiếp sóng không được để trống`);
         }
+
+        for (const channel of state?.listChannel) {
+            if (name.trim() === channel?.title) {
+                return Notify.error(`Tên kênh đã tồn tại`);
+            }
+            if (url.trim() === channel?.url) {
+                return Notify.error(`Link tiếp sóng đã tồn tại`);
+            }
+        }
+
         setLoading(true);
         apiChannel.createChannel(
             {
@@ -85,18 +92,18 @@ const ModalCreateAd = ({onOk, onCancel, visible}) => {
             (err, res) => {
                 if (res) {
                     onOk(res);
+                    Notify.success('Tạo mới kênh tiếp sóng thành công');
                 }
                 setLoading(false);
-                Notify.success(`Tạo kênh tiếp sóng thành công`)
             }
         );
     };
     useEffect(() => {
-        if(visible) {
-            setName('')
-            setUrl(' ')
+        if (visible) {
+            setName('');
+            setUrl(' ');
         }
-    },[])
+    }, [visible]);
     return (
         <Modal
             title={`Tạo kênh tiếp sóng`}
@@ -110,7 +117,14 @@ const ModalCreateAd = ({onOk, onCancel, visible}) => {
                     <Form>
                         <Form.Item
                             name="name"
-                            label="Tên Kênh"></Form.Item>
+                            label="Tên Kênh"
+                            rules={[
+                                {
+                                    required: true
+                                }
+                            ]}
+                        >
+                        </Form.Item>
                     </Form>
                 </Col>
                 <Col md={{span: 18, offset: 1}} className="my-1">
@@ -123,7 +137,15 @@ const ModalCreateAd = ({onOk, onCancel, visible}) => {
             <Row>
                 <Col md={{span: 5}}>
                     <Form>
-                        <Form.Item name="url" label="Link tiếp sóng"></Form.Item>
+                        <Form.Item
+                            name="url"
+                            label="Link tiếp sóng"
+                            rules={[
+                                {
+                                    required: true
+                                }
+                            ]}>
+                        </Form.Item>
                     </Form>
                 </Col>
                 <Col md={{span: 18, offset: 1}} className="my-1">
@@ -200,16 +222,18 @@ const GeneralConfig = React.memo(() => {
         setEditingKey('');
     }, []);
 
-    const save = async id => {
+    const save = async (id) => {
         try {
             const row = await form.validateFields();
             const newData = [...value.data];
             const index = newData.findIndex(item => id === item.id);
             if (index > -1) {
                 const item = newData[index];
-                if (row?.title === newData[index]?.title) {
-                    setEditingKey('');
-                    return;
+                if (row?.title.trim().length === 0) {
+                    return Notify.error(`Tên kênh không được để trống`);
+                }
+                if (row?.url.trim().length === 0) {
+                    return Notify.error(`Link tiếp sóng không được để trống`);
                 }
                 apiChannel.updateChannel({
                     id,
@@ -225,6 +249,7 @@ const GeneralConfig = React.memo(() => {
                             ...prev,
                             data: newData
                         }));
+                        Notify.success('Sửa kênh tiếp sóng thành công');
                     }
                     setEditingKey('');
                 });
@@ -240,6 +265,7 @@ const GeneralConfig = React.memo(() => {
         apiChannel.deleteChannel({id}, (err, res) => {
             if (!err) {
                 getMoreAd();
+                Notify.success('Xóa kênh tiếp sóng thành công');
             } else {
                 setValue(prev => ({
                     ...prev,
@@ -265,7 +291,7 @@ const GeneralConfig = React.memo(() => {
                 render: (_, data) => [`${data?.title}`]
             },
             {
-                title: `Url`,
+                title: `Link tiếp sóng`,
                 dataIndex: ['url'],
                 editable: true,
                 render: (_, data) => [`${data?.url}`]
@@ -278,25 +304,27 @@ const GeneralConfig = React.memo(() => {
                     const editable = isEditing(record);
                     return editable ? (
                         <Row className="justify-content-center">
-                        <Button
-                            onClick={() => save(record?.id)}
-                            icon={<SaveOutlined/>}
-                            className="mr-2 row-all-center"
-                        >
-                            Lưu
-                        </Button>
-                        <Popconfirm
-                            title="Xác nhận hủy thay đổi ?"
-                            onConfirm={cancel}
-                        >
                             <Button
-                                icon={<CloseCircleOutlined/>}
-                                className="row-all-center"
+                                onClick={() => {
+                                    save(record?.id);
+                                }}
+                                icon={<SaveOutlined/>}
+                                className="mr-2 row-all-center"
                             >
-                                Hủy
+                                Lưu
                             </Button>
-                        </Popconfirm>
-                    </Row>) : (<Row className="justify-content-center">
+                            <Popconfirm
+                                title="Xác nhận hủy thay đổi ?"
+                                onConfirm={cancel}
+                            >
+                                <Button
+                                    icon={<CloseCircleOutlined/>}
+                                    className="row-all-center"
+                                >
+                                    Hủy
+                                </Button>
+                            </Popconfirm>
+                        </Row>) : (<Row className="justify-content-center">
                         <Button
                             disabled={editingKey !== ''}
                             onClick={() => {
@@ -342,7 +370,7 @@ const GeneralConfig = React.memo(() => {
         });
     });
     const getMoreAd = () => {
-        apiChannel.getListChannel( (err, res) => {
+        apiChannel.getListChannel((err, res) => {
             if (res) {
                 setValue(prev => ({
                     ...prev,
@@ -367,34 +395,19 @@ const GeneralConfig = React.memo(() => {
             }
         });
     }, []);
+
     const onCreateAd = useCallback(() => {
         setValue(prev => ({
             ...prev,
             isLoading: true,
             visibleModalNew: false
         }));
-        getMoreAd()
+        getMoreAd();
     });
-    // const _listSelect = useRef([
-    //     {label: 'Đài Tỉnh/Thành phố', key: 'provinceSourceStream'},
-    //     {
-    //         label: 'Đài Quận/Huyện',
-    //         key: 'districtSourceStream',
-    //         moreOptions: [{title: 'Đài Tỉnh', id: 'dv1', isDivision: true}]
-    //     },
-    //     {
-    //         label: 'Đài Phường/Xã',
-    //         key: 'villageSourceStream',
-    //         moreOptions: [
-    //             {title: 'Đài Tỉnh', id: 'dv1', isDivision: true},
-    //             {title: 'Đài Huyện', id: 'dv2', isDivision: true}
-    //         ]
-    //     }
-    // ]).current;
 
     const _listInput = useRef([
-        {label: 'Số lượng file tải lên/tháng', key: 'maxNumberOfFile'},
-        {label: 'Số lượng folder được tạo/tháng', key: 'maxNumberOfFolder'}
+        {label: 'Số lượng tập tin tải lên/tháng', key: 'maxNumberOfFile'},
+        {label: 'Số lượng thư mục được tạo/tháng', key: 'maxNumberOfFolder'}
     ]).current;
 
     const mountedInput = useRef(false);
@@ -453,40 +466,6 @@ const GeneralConfig = React.memo(() => {
         });
     };
 
-    // const getValue = (key) => {
-    //     const data = state[key];
-    //     if (data?.sourceType === 3) {
-    //         return state.listChannel.find(c => c.id === data?.channel?.id)?.id;
-    //     } else if (data?.sourceType === 4) {
-    //         return 'dv' + data?.division;
-    //     }
-    // };
-
-    // const handleEdit = (key, channel, sourceType, division) => {
-    //     apiConfig.editConfig({
-    //         id: state?.id,
-    //         [key]: {channel, sourceType, division}
-    //     }, (err, res) => {
-    //         if (res) {
-    //             setState(prev => ({
-    //                 ...prev,
-    //                 ...res
-    //             }));
-    //             Notify.success('Thao tác thành công', {autoClose: 1200});
-    //         } else {
-    //             Notify.error('Thao tác thất bại', {autoClose: 1200});
-    //         }
-    //     });
-    // };
-
-    // const handleSelect = (key, value) => {
-    //     if (String(value).includes('dv')) {
-    //         handleEdit(key, undefined, 4, value.split('dv')[1]);
-    //     } else {
-    //         handleEdit(key, value, 3, null);
-    //     }
-    // };
-
     const handleChangeInput = (key, value) => {
         if (!mountedInput.current) mountedInput.current = true;
         if (counter.current[key]) {
@@ -527,50 +506,6 @@ const GeneralConfig = React.memo(() => {
         }
     };
 
-    // const gotoDefaultCalendar = () => {
-    //     if (!state?.defaultCalendar?.id) {
-    //         Modal.confirm({
-    //             title: 'Nhắc nhở',
-    //             content: 'Chưa có lịch mặc định, tạo lịch mặc định ngay ?',
-    //             okText: 'Xác nhận',
-    //             cancelText: 'Hủy bỏ',
-    //             onOk: () => {
-    //                 const data = {
-    //                     date_schedule: moment().format("YYYY-MM-DD"),
-    //                     default_calendar: true,
-    //                     adTree: {
-    //                         title: "Lịch mặc định",
-    //                         province: null,
-    //                         districts: [],
-    //                         wards: [],
-    //                         selected: [adCode]
-    //                     }
-    //                 };
-    //                 setState(prev => ({
-    //                     ...prev,
-    //                     isLoadingCreateDefaultCalendar: true
-    //                 }));
-    //                 apiCalendar.createCalendar(data, (err, res) => {
-    //                     if (res) {
-    //                         history.push("/radio-program", {
-    //                             selectedCalendar: res,
-    //                             isDefaultCalendar: true
-    //                         });
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //         return;
-    //     }
-    //     if (!state.defaultCalendar?.id) {
-    //         return Notify.error('Lịch không tồn tại');
-    //     }
-    //     history.push("/radio-program", {
-    //         selectedCalendar: state.defaultCalendar,
-    //         isDefaultCalendar: true
-    //     });
-    // };
-
     React.useEffect(() => {
         apiChannel.getListChannel((err, resChannel) => {
             if (resChannel) {
@@ -599,7 +534,7 @@ const GeneralConfig = React.memo(() => {
             <Divider className="font-weight-bold font-size-1rem mb-3" orientation="left">
                 <div className="row-vertical-center">
                     <AuditOutlined/>
-                    <span className="ml-1">Số lượng File/Folder</span>
+                    <span className="ml-1">Số lượng tập tin / thư mục</span>
                 </div>
             </Divider>
             <div className="grid-input">
@@ -617,40 +552,6 @@ const GeneralConfig = React.memo(() => {
                     ))
                 }
             </div>
-            {/*<Divider className="font-weight-bold font-size-1rem mb-3" orientation="left">*/}
-            {/*    <div className="row-vertical-center">*/}
-            {/*        <ControlOutlined/>*/}
-            {/*        <span className="ml-1">Cấu hình Đài phát khi không có lịch</span>*/}
-            {/*    </div>*/}
-            {/*</Divider>*/}
-            {/*<div className="grid-select">*/}
-            {/*    {*/}
-            {/*        _listSelect.map(({label, key, moreOptions}, i) => (*/}
-            {/*            <FormGroup key={i} className="grid-select-items">*/}
-            {/*                <Label for={key} className="mr-2">*/}
-            {/*                    {label}*/}
-            {/*                </Label>*/}
-            {/*                <CustomSelect*/}
-            {/*                    value={getValue(key)}*/}
-            {/*                    listChannel={moreOptions ? state.listChannel.concat(moreOptions) : state.listChannel}*/}
-            {/*                    onChange={(value) => handleSelect(key, value)}*/}
-            {/*                />*/}
-            {/*            </FormGroup>*/}
-            {/*        ))*/}
-            {/*    }*/}
-            {/*</div>*/}
-            {/*<div>*/}
-            {/*    <Button*/}
-            {/*        icon={<LoginOutlined/>}*/}
-            {/*        type="primary"*/}
-            {/*        className="row-vertical-center"*/}
-            {/*        loading={state.isLoadingCreateDefaultCalendar || state.isGettingDefaultCalendar}*/}
-            {/*        onClick={gotoDefaultCalendar}*/}
-            {/*        disabled={state.isGettingDefaultCalendar}*/}
-            {/*    >*/}
-            {/*        Chuyển tới lịch mặc định*/}
-            {/*    </Button>*/}
-            {/*</div>*/}
             <div className="d-flex justify-content-between align-items-center">
                 <Divider className="font-weight-bold font-size-1rem mb-3 mw-75" type="vertical" orientation="left">
                     <div className="row-vertical-center">
@@ -678,13 +579,14 @@ const GeneralConfig = React.memo(() => {
                         }
                     }}
                     isLoading={value.isLoading}
-                    rowKey="code"
+                    rowKey={value.data.id}
                     data={value.data}
                     columns={mergedColumns}
                     rowClassName="editable-row"
                 />
             </Form>
             <ModalCreateAd
+                state={state}
                 visible={value.visibleModalNew}
                 onCancel={() =>
                     setValue(prev => ({...prev, visibleModalNew: false}))

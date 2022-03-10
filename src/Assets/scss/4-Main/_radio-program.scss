@@ -71,6 +71,7 @@
       .e-table-container {
         height: calc(100vh - 140px);
         overflow: auto;
+        z-index: 1;
       }
 
       .droppable-zone {

@@ -256,7 +256,7 @@ const ModalDetails = React.memo(props => {
                                 </div>
                                 <div className="w-100 px-1">
                                     <Slider
-                                        defaultValue={data?.vol}
+                                        value={data?.vol}
                                         onChange={value =>
                                             setData(prev => ({
                                                 ...prev,

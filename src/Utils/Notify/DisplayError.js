@@ -11,10 +11,12 @@ import {
     min_length,
     specialKey,
     TOKEN_EXPIRATION_CODE,
-    unique
+    unique,
+    SRC_MESSAGE
 }                  from "./ErrorMessage";
 
 const _listKey = Object.keys(_errorMessage);
+const _srcKey = Object.keys(SRC_MESSAGE)
 
 function findSameKey(key) {
     if (key) {
@@ -70,6 +72,10 @@ export default function displayError(error, options = {notFound: false}) {
             return Notify.error("Máy chủ dữ liệu gặp sự cố, vui lòng báo lại kỹ thuật viên");
         } else if (error.response.data.errorCode) {
             let key = findSameKey(error.response.data.errorCode.split(".")[0]);
+            let keySrc = ""
+            if(key === 'CALENDAR021S') {
+                return Notify.error(`${error.response.data.errorMessage}`)
+            }
             let message = "";
             if (specialKey.includes(key)) {
                 return displaySpecialError(key, error);

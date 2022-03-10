@@ -16,21 +16,6 @@ const ModalTTS = (props) => {
     const {visible, onOk, onCancel, currentFolder} = props;
 
     const _data = useRef({
-        service: ["servicebin", "servicegoo"],
-        servicebin: [
-            {
-                title: 'Giọng nam',
-                voiceID: 'vi-VN'
-            },
-            {
-                title: 'Giọng nữ',
-                voiceID: 'vi-VN2'
-            },
-            {
-                title: 'Giọng nam trầm',
-                voiceID: 'vi-VN3'
-            }
-        ],
         servicegoo: [
             {
                 title: 'Giọng nữ',
@@ -39,6 +24,14 @@ const ModalTTS = (props) => {
             {
                 title: 'Giọng nam',
                 voiceID: 'vi-VN-Standard-B'
+            },
+            {
+                title: 'Giọng nam trầm',
+                voiceID: 'vi-VN-Wavenet-D'
+            },
+            {
+                title: 'Giọng nữ trầm',
+                voiceID: 'vi-VN-Wavenet-C'
             }
         ]
     }).current;
@@ -51,18 +44,12 @@ const ModalTTS = (props) => {
 
     const [voiceSpeed, setVoiceSpeed] = useState(0);
 
-    const [voice, setVoice] = useState('vi-VN');
+    const [voice, setVoice] = useState('vi-VN-Standard-A');
 
-    const [voiceService, setVoiceService] = useState('servicebin');
+    const [voiceService, setVoiceService] = useState('servicegoo');
 
     const handleBeforeOk = () => {
         setIsLoading(true);
-        if (fileName === '') {
-            Notify.error('Tên file không được để trống');
-            setIsLoading(false);
-            return;
-        }
-
         if (text === '') {
             Notify.error('Nội dung không được để trống');
             setIsLoading(false);
@@ -70,7 +57,7 @@ const ModalTTS = (props) => {
         }
         setIsLoading(true);
         onOk({
-            title: fileName,
+            title: fileName ? fileName : `${text.slice(0, 15)}...`,
             duration: 60,
             parent: currentFolder.id,
             note: '',
@@ -81,11 +68,6 @@ const ModalTTS = (props) => {
                 voiceSpeed: voiceSpeed.toString()
             }
         }, setIsLoading);
-    };
-
-    const onChangeVoiceService = (value) => {
-        setVoiceService(value);
-        setVoice(_data[value][0].voiceID);
     };
 
     const onChangeVoice = (value) => {
@@ -118,24 +100,6 @@ const ModalTTS = (props) => {
                 />
             </Row>
             <Row className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center mt-2">
-                    <div className="text-bold-5">Chọn dịch vụ:</div>
-                    <Select
-                        className="ml-2"
-                        value={voiceService}
-                        dropdownMatchSelectWidth={false}
-                        onChange={onChangeVoiceService}
-                        style={{minWidth: '110px'}}
-                    >
-                        {
-                            _data.service.map(d => (
-                                <Select.Option value={d} key={d}>
-                                    {d}
-                                </Select.Option>
-                            ))
-                        }
-                    </Select>
-                </div>
                 <div className="d-flex align-items-center mt-2">
                     <div className="text-bold-5">Chọn giọng nói:</div>
                     <Select

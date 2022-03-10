@@ -7,10 +7,8 @@ import Sidebar           from "./Sidebar/Sidebar";
 import Main              from "./Main";
 import {findData}        from "../../Utils/Data/tree";
 import apiAdministrative from "../../Api/Administrative/Administrative";
-import {allRole}         from "../../Config/role";
 import SidebarBase       from "../../Components/Layouts/Sidebar/SidebarBase";
 import {useHistory}      from "react-router-dom";
-import {defaultDivision} from "../../Config/division";
 
 const EquipmentManagement = React.memo(() => {
     const {user} = useSelector(state => ({user: state.user}));
@@ -195,7 +193,7 @@ const EquipmentManagement = React.memo(() => {
         mountedComponent.current = true;
         const administrative = user?.administrativeCode ?? {};
         apiAdministrative.getAdministrativeWithSelf({
-            code: user?.administrativeCode?.code ?? undefined
+            code: user?.administrativeCode?.code ?? user?.id
         }, (err, result) => {
             if (result && mountedComponent.current) {
                 const newData = [{

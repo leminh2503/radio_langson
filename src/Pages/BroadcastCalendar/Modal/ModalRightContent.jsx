@@ -57,12 +57,17 @@ const ModalRightContent = ({state, content, time}) => {
                                 </div>
                                 <div className="mt-2">
                                     <div className="text-bold-5 mb-1">
-                                        * <u>Nội dung phát:</u>
+                                        <u>Nội dung phát:</u>
                                     </div>
                                     <Input
                                         placeholder={`Điền nội dung`}
                                         onChange={(e) => content.current = e.target.value}
                                     />
+                                </div>
+                                <div className="mt-2">
+                                    <i style={{color: 'red'}}>
+                                        * Không điền nội dung sẽ lấy nội dung là tên file
+                                    </i>
                                 </div>
                                 <div className="mt-2">
                                     <div className="mt-2 text-bold-5">Thời gian bắt đầu:</div>

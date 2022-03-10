@@ -1,7 +1,11 @@
 import React, {useMemo, useRef, useState}                                              from "react";
 import {Breadcrumb, Button, Dropdown, Input, Menu, Result, Row, Select, Spin, Tooltip} from "antd";
-import {FontAwesomeIcon}                                                               from "@fortawesome/react-fontawesome";
-import {faCheck}                                                                       from "@fortawesome/free-solid-svg-icons";
+import {
+    FontAwesomeIcon
+}                                                                                      from "@fortawesome/react-fontawesome";
+import {
+    faCheck
+}                                                                                      from "@fortawesome/free-solid-svg-icons";
 import {
     AppstoreOutlined,
     BarsOutlined,
@@ -17,7 +21,9 @@ import {
     PlusCircleOutlined,
     UploadOutlined
 }                                                                                      from "@ant-design/icons";
-import {faFileAudio}                                                                   from "@fortawesome/free-regular-svg-icons";
+import {
+    faFileAudio
+}                                                                                      from "@fortawesome/free-regular-svg-icons";
 import {useSelector}                                                                   from "react-redux";
 import _                                                                               from "lodash";
 import moment                                                                          from "moment";
@@ -41,46 +47,43 @@ const FolderContent = (props) => {
     return (
         <div className="folder-content">
             {
-                state.data.map((item, i) => {
-                    return (
-                        <Tooltip
-                            title={item?.nameWithType?.length > 20 || item?.title?.length > 15 ? (item?.nameWithType ?? item?.title) : ''}
-                            key={i}>
-                            <Dropdown trigger="contextMenu" overlay={renderMenuActions}>
-                                <div
-                                    className={`folder-parent ${getSelectedClassName(item)}`}
-                                    onClick={(e) => handleSelect(e, item)}
-                                    onContextMenu={() => onContextMenu(item)}
-                                    onDoubleClick={() => onDoubleClick(item)}
-                                >
-                                    <div className="item-checked position-absolute">
-                                        <FontAwesomeIcon
-                                            className="icon-checked"
-                                            icon={faCheck}
-                                            size="1x"
-                                        />
+                state.data.map((item, i) => (
+                    <Tooltip
+                        title={item?.nameWithType?.length > 20 || item?.title?.length > 15 ? (item?.nameWithType ?? item?.title) : ''}
+                        key={i}>
+                        <Dropdown trigger="contextMenu" overlay={renderMenuActions}>
+                            <div
+                                className={`folder-parent ${getSelectedClassName(item)}`}
+                                onClick={(e) => handleSelect(e, item)}
+                                onContextMenu={() => onContextMenu(item)}
+                                onDoubleClick={() => onDoubleClick(item)}
+                            >
+                                <div className="item-checked position-absolute">
+                                    <FontAwesomeIcon
+                                        className="icon-checked"
+                                        icon={faCheck}
+                                        size="1x"
+                                    />
+                                </div>
+                                <div className="item-folder">
+                                    <div>
+                                        {
+                                            item?.type === 'folder' || item?.type === 'administrative' ?
+                                                <FolderFilled/>
+                                                :
+                                                <FontAwesomeIcon icon={faFileAudio}/>
+                                        }
                                     </div>
-                                    <div className="item-folder">
-                                        <div>
-                                            {
-                                                item?.type === 'folder' || item?.type === 'administrative' ?
-                                                    <FolderFilled/>
-                                                    :
-                                                    <FontAwesomeIcon icon={faFileAudio}/>
-                                            }
-                                        </div>
-                                        <div className="title-file">
-                                            <span className="available-title">
-                                                {item?.typeName !== 'lang' ? (item?.nameWithType ?? item?.title) : item?.name}
-                                            </span>
-                                        </div>
+                                    <div className="title-file">
+                                        <span className="available-title">
+                                            {item?.nameWithType ?? item?.title}
+                                        </span>
                                     </div>
                                 </div>
-                            </Dropdown>
-                        </Tooltip>
-                    )
-                })
-                
+                            </div>
+                        </Dropdown>
+                    </Tooltip>
+                ))
             }
         </div>
     );
@@ -440,11 +443,18 @@ const ContentManagement = React.memo(() => {
         });
     };
 
-    const handleUploadFile = (dataModal, setLoadingModal) => {
+    const handleUploadFile = (dataModal, setLoadingModal, thread1, thread2, newFileName) => {
         const {dataBreadcrumb} = state;
         const last = dataBreadcrumb?.length - 1;
         const parent = dataBreadcrumb[last]?.id;
-        apiFile.createFile({...dataModal, url: dataModal.file, parent}, (err, res) => {
+        apiFile.createFile({
+            ...dataModal,
+            title: dataModal.title ? dataModal.title : newFileName,
+            url: dataModal.file,
+            parent,
+            thread1,
+            thread2,
+        }, (err, res) => {
             if (res) {
                 getData('c-file');
                 handleCloseModalNewFile();
@@ -455,7 +465,9 @@ const ContentManagement = React.memo(() => {
 
     const handleEditFileFolder = (dataModal, setLoadingModal, action) => {
         if (action === 'e-File') {
-            apiFile.editFile(dataModal, (err, res) => {
+            apiFile.editFile({
+                ...dataModal,
+            }, (err, res) => {
                 if (res) {
                     getData('c-edit');
                     setSelectedItem(res);
@@ -464,7 +476,8 @@ const ContentManagement = React.memo(() => {
                 setLoadingModal(false);
             });
         } else {
-            apiFolder.editFolder(dataModal, (err, res) => {
+            apiFolder.editFolder(dataModal,
+                (err, res) => {
                 if (res) {
                     getData('c-edit');
                     setSelectedItem(res);

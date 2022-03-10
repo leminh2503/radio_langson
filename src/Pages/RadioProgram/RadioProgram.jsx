@@ -33,11 +33,11 @@ const RadioProgram = React.memo(() => {
 
     const interval = useRef(null);
 
-    const dateSchedule = moment(state?.selectedCalendar?.date_schedule);
+    const dateSchedule = moment(state?.selectedCalendar?.dateSchedule);
 
     const now = moment().startOf('day');
 
-    const disabledSchedule = dateSchedule < now && !state.selectedCalendar?.default_calendar;
+    const disabledSchedule = dateSchedule < now && !state.selectedCalendar?.defaultCalendar;
 
     const backHome = () => {
         history.push("/broadcast-calendar");
@@ -83,8 +83,6 @@ const RadioProgram = React.memo(() => {
         });
     };
 
-    console.log(state)
-
     useEffect(() => {
         if (!idCalendar) {
             setState(prev => ({
@@ -99,9 +97,9 @@ const RadioProgram = React.memo(() => {
                 fetchProgram();
                 if (res) {
                     setState(prev => ({...prev, selectedCalendar: res}));
-                    if (res?.live_eme_calendar) {
+                    if (res?.liveEmeCalendar) {
                         setState(prev => ({...prev, isEmeCalendar: true}));
-                        if (moment().startOf('day') !== moment(res?.date_schedule)) return;
+                        if (moment().startOf('day') !== moment(res?.dateSchedule)) return;
                         interval.current = setInterval(() => {
                             fetchProgramContinuously();
                         }, 10 * 1000);
@@ -161,7 +159,7 @@ const RadioProgram = React.memo(() => {
                     stateRef={stateRef}
                     historyState={history.location.state}
                     disabledSchedule={disabledSchedule}
-                    isDefaultCalendar={state?.default_calendar}
+                    isDefaultCalendar={state?.defaultCalendar}
                 />
             </SidebarBase>
             <Schedule

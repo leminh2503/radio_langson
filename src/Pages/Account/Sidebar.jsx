@@ -11,6 +11,7 @@ import {
     SettingOutlined,
     UsergroupAddOutlined,
     UserOutlined,
+    MenuOutlined
 }                      from "@ant-design/icons";
 
 import {userClear}        from "../../Redux/Actions/userAction";
@@ -54,6 +55,13 @@ const Sidebar = React.memo(({isOpenPage, setIsOpenPage}) => {
             icon: <SettingOutlined className="mr-2"/>,
             visible: user?.role?.id === allRole.system,
             onClick: () => setIsOpenPage("config")
+        },
+        {
+            tab: 'category',
+            label: 'Danh mục',
+            icon: <MenuOutlined className="mr-2"/>,
+            visible: user?.role?.id === allRole.system,
+            onClick: () => setIsOpenPage("category")
         },
         {
             tab: 'administrative',

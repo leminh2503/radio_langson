@@ -165,7 +165,7 @@ const listActionsButtonActions = ({
         {
             label: 'Lặp lịch hiện tại',
             icon: <DiffOutlined/>,
-            visible: division === 1 && !isDefaultCalendar,
+            visible:!isDefaultCalendar,
             onClick: () => {
                 openModalRepeatSchedule();
             }

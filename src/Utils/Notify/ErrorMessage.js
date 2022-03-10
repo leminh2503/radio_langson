@@ -11,6 +11,11 @@ const AUTH_MESSAGE = {
     AUTH4001: "Tài khoản không còn hiệu lực, vui lòng liên hệ quản trị viên"
 };
 
+const SRC_MESSAGE = {
+    ValidatorInvalid: "Trình xác thực không hợp lệ",
+    IntegrityError: "Tên file đã tồn tại"
+}
+
 const ADMINISTRATIVE_MESSAGE = {
     AD011M: "Không thể xóa địa phương vì đang tồn tại địa phương con"
 }
@@ -58,7 +63,8 @@ const CONFIRM_MESSAGE = {
 
 const CALENDAR_MESSAGE = {
     CALENDAR011S: "Đơn vị đã tồn tại trong một lịch khác",
-    CALENDAR601A: "Không thể xóa lịch đã có chương trình"
+    CALENDAR601A: "Không thể xóa lịch đã có chương trình",
+    CALENDAR021S: 'Ngày lặp lịch không phù hợp, đã có chương trình trong lịch',
 };
 
 const SOURCE_STREAM_MESSAGE = {
@@ -75,7 +81,9 @@ const SCHEDULE_MESSAGE = {
     SCHEDULE071P: 'Không thể kết thúc, vui lòng kiểm tra lại trạng thái chương trình',
     SCHEDULE072P: 'Chỉ có người tạo mới có thể thao tác',
     SCHEDULE102V: 'Thời gian bắt đầu, kết thúc không phù hợp',
-    SCHEDULE111V: 'Thời gian bắt đầu, kết thúc không phù hợp'
+    SCHEDULE111V: 'Thời gian bắt đầu, kết thúc không phù hợp',
+    SCHEDULE002P: 'Lịch đang tạm khóa',
+    SCHEDULE080: 'Có quá nhiều chương trình đang trực tiếp',
 };
 
 const VALID_MESSAGE = {
@@ -95,7 +103,8 @@ const FILE_FOLDER_MESSAGE = {
 const PROTECT_MESSAGE = {
     PROTECT_AdministrativeTree_Administrative: 'Không thể xóa, địa phương đã được sử dụng để tạo lịch phát',
     PROTECT_SourceStream_File: 'Không thể xóa file đã được sử dụng để tạo chương trình phát',
-    PROTECT_HistoryAction_Administrative: 'Không thể xóa, địa phương đã được lưu lịch sử hoạt động'
+    PROTECT_HistoryAction_Administrative: 'Không thể xóa, địa phương đã được lưu lịch sử hoạt động',
+    PROTECT_SourceStream_Channel: 'Không thể xóa, Kênh tiếp sóng đã đi vào hoạt động',
 };
 
 const DEVICE_MESSAGE = {
@@ -119,7 +128,7 @@ const OTHERS_MESSAGE = {
     'does_not_exist': 'Không tìm thấy dữ liệu',
     'not_authenticated': 'Xác thực không hợp lệ',
     'min_date_value': 'Khoảng thời gian không đúng',
-    'src': 'Sai cú pháp control',
+    'src': "Tên file đã tồn tại"
 };
 
 const message = {
@@ -136,7 +145,8 @@ const message = {
     ...FILE_FOLDER_MESSAGE,
     ...PROTECT_MESSAGE,
     ...DEVICE_MESSAGE,
-    ...OTHERS_MESSAGE
+    ...OTHERS_MESSAGE,
+    ...SRC_MESSAGE
 };
 
 const unique = {
@@ -171,5 +181,6 @@ export {
     unique,
     specialKey,
     invalid,
-    does_not_exist
+    does_not_exist,
+    SRC_MESSAGE
 };

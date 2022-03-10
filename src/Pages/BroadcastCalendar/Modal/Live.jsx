@@ -3,6 +3,7 @@ import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from "react
 import {Badge, Modal as ModalAntd, Row, Tabs}                        from "antd";
 import {faFileAudio, faMicrophone}                                   from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon}                                             from "@fortawesome/react-fontawesome";
+import moment                                                        from 'moment';
 
 import TreeFolder        from "../Tree/TreeFolder";
 import RecordComponent   from "../RecordComponent/RecordComponent";
@@ -64,9 +65,16 @@ const Live = React.memo((props) => {
         }));
     };
 
+    const formatTimeCurrent = (second = null) => {
+        if (!second) {
+            const date = new Date();
+            second = date.getSeconds();
+        }
+        return 15 - (second % 15);
+    };
+
     const handleCreateLiveWithFile = () => {
         if (!state.file) return Notify.error('Chưa file nào được chọn');
-        if (!content.current) return Notify.error('Chưa điền nội dung phát trực tiếp');
         const formatTime = "HH:mm:ss";
         ModalAntd.confirm({
             title: 'Nhắc nhở',
@@ -74,12 +82,17 @@ const Live = React.memo((props) => {
             okText: "Xác nhận",
             zIndex: 10000,
             onOk: () => {
+                const currentTime = moment().add(formatTimeCurrent(), 'second');
+                if (time.current) {
+                    const getSecondTime = time.current.format(formatTime).split(":")[2];
+                    time.current = time.current.clone().add(formatTimeCurrent(getSecondTime), 'second');
+                }
                 setState(prev => ({...prev, isCreatingLive: true}));
                 apiProgram.createLive({
-                    title: content.current,
+                    title: content.current ? content.current : `Chương trình trực tiếp từ file ${state?.file.title}`,
                     broadcastCalendar: selectedCalendar?.id,
-                    timeStart: time.current ? time.current.format(formatTime) : null,
-                    timeEnd: time.current ? time.current.clone().add(state.file.duration, 'seconds').format(formatTime) : null,
+                    timeStart: time.current ? time.current.format(formatTime) : currentTime.format(formatTime),
+                    timeEnd: time.current ? time.current.clone().add(state.file.duration, 'seconds').format(formatTime) : currentTime.clone().add(state.file.duration, 'seconds').format(formatTime),
                     sourceStream: {
                         sourceType: 5,
                         file: state.file.id

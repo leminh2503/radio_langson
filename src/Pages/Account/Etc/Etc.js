@@ -31,7 +31,7 @@ const listInputModalAccount = [
         keyValue: "email",
         disabled: true,
         required: true,
-        placeholder: 'email@email.com'
+        placeholder: 'email@gmail.com'
     },
     {
         label: "Mật khẩu",

@@ -33,16 +33,12 @@ const CreateCalendar = React.memo((props) => {
             Notify.error('Ngày không được để trống');
             return;
         }
-        if (!data.current.title) {
-            Notify.error('Tên lịch không được để trống');
-            return;
-        }
         setIsLoading(true);
         apiCalendar.createCalendar({
             date_schedule: data.current.date.format("YYYY-MM-DD"),
-            ad_tree: {
+            adTree: {
                 ...adCode.current,
-                title: data.current.title
+                title: data.current.date.format("DD/MM/YYYY")
             }
         }, (err, res) => {
             if (res) {
@@ -83,14 +79,6 @@ const CreateCalendar = React.memo((props) => {
                                     onChange={onChangeDate}
                                 />
                             </div>
-                            <Row className="my-3">
-                                <span className="text-bold-5">Tên lịch</span>
-                                <Input
-                                    className="mt-1"
-                                    placeholder='Tên của lịch'
-                                    onChange={onChangeTitle}
-                                />
-                            </Row>
                         </div>
                     </Row>
                     <div className="text-bold-5">

@@ -63,6 +63,7 @@ const ButtonComponent = React.memo(({disabled, setNotifications}) => {
                         if (!x.read) x.read = 1;
                         return x;
                     });
+                    console.log(cpPrev);
                     return cpPrev;
                 });
                 dispatch(notifyClear());
@@ -214,7 +215,7 @@ const Navbar = React.memo(() => {
         pageSize: 20,
         isLast: false,
         currentPage: 1,
-        isLoading: true
+        isLoading: true,
     });
 
     const [isVisible, setIsVisible] = useState(false);
@@ -266,8 +267,12 @@ const Navbar = React.memo(() => {
             if (!item?.read) {
                 apiNotify.setAsRead(item, (err) => {
                     if (!err) {
-                        dispatch(notifyChange());
-                    }
+                    apiNotify.countUnread((err, res) => {
+                        if(res) {
+                            dispatch(notifyChange(res.count));
+                        }
+                    })
+                }
                 });
             }
 

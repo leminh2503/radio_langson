@@ -59,34 +59,34 @@ const Users = React.memo(() => {
                             <Pie data={data} options={options}/>
                         </div>
                     </div>
-                    <Table className="mb-0 mt-2">
-                        <thead>
-                        <tr>
-                            <th>Trạng thái</th>
-                            <th className="text-right">Tỉ lệ</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <FontAwesomeIcon icon={faSquare} color={datasets.backgroundColor[0]}/>
-                                <span className="ml-2">Hoạt động</span>
-                            </td>
-                            <td className="text-right text-success">
-                                {((data.org?.userToday / data.org?.userTotal) * 100).toFixed(2)}%
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <FontAwesomeIcon icon={faSquare} color={datasets.backgroundColor[1]}/>
-                                <span className="ml-2">Không Hoạt động</span>
-                            </td>
-                            <td className="text-right text-success">
-                                {(((data.org?.userTotal - data.org?.userToday) / data.org?.userTotal) * 100).toFixed(2)}%
-                            </td>
-                        </tr>
-                        </tbody>
-                    </Table>
+                    {/*<Table className="mb-0 mt-2">*/}
+                    {/*    <thead>*/}
+                    {/*    <tr>*/}
+                    {/*        <th>Trạng thái</th>*/}
+                    {/*        <th className="text-right">Tỉ lệ</th>*/}
+                    {/*    </tr>*/}
+                    {/*    </thead>*/}
+                    {/*    <tbody>*/}
+                    {/*    <tr>*/}
+                    {/*        <td>*/}
+                    {/*            <FontAwesomeIcon icon={faSquare} color={datasets.backgroundColor[0]}/>*/}
+                    {/*            <span className="ml-2">Hoạt động</span>*/}
+                    {/*        </td>*/}
+                    {/*        <td className="text-right text-success">*/}
+                    {/*            {((data.org?.userToday / data.org?.userTotal) * 100).toFixed(2)}%*/}
+                    {/*        </td>*/}
+                    {/*    </tr>*/}
+                    {/*    <tr>*/}
+                    {/*        <td>*/}
+                    {/*            <FontAwesomeIcon icon={faSquare} color={datasets.backgroundColor[1]}/>*/}
+                    {/*            <span className="ml-2">Không Hoạt động</span>*/}
+                    {/*        </td>*/}
+                    {/*        <td className="text-right text-success">*/}
+                    {/*            {(((data.org?.userTotal - data.org?.userToday) / data.org?.userTotal) * 100).toFixed(2)}%*/}
+                    {/*        </td>*/}
+                    {/*    </tr>*/}
+                    {/*    </tbody>*/}
+                    {/*</Table>*/}
                 </div>
             </CardBody>
         </Card>

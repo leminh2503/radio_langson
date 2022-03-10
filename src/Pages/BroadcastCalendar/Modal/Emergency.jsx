@@ -3,6 +3,7 @@ import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from "react
 import {Badge, Modal as ModalAntd, Row, Tabs}                        from "antd";
 import {FontAwesomeIcon}                                             from "@fortawesome/react-fontawesome";
 import {faFileAudio, faMapMarkerAlt, faMicrophone}                   from "@fortawesome/free-solid-svg-icons";
+import moment                                                        from 'moment';
 
 import TreeAdministrative from "../Tree/TreeAdministrative";
 import RecordComponent    from "../RecordComponent/RecordComponent";
@@ -28,6 +29,8 @@ const Emergency = React.memo((props) => {
 
     const adCode = useRef('');
 
+    const [data, setData] = useState([]);
+
     const hasWorker = useRef(false);
 
     const initState = useRef({
@@ -40,7 +43,7 @@ const Emergency = React.memo((props) => {
 
     const content = useRef('');
 
-    const time = useRef(null);
+    let time = useRef(null);
 
     const [state, setState] = useState(initState);
 
@@ -73,13 +76,20 @@ const Emergency = React.memo((props) => {
         }));
     };
 
+    const formatTimeCurrent = (second = null) => {
+        if (!second) {
+            const date = new Date();
+            second = date.getSeconds();
+        }
+        return 15 - (second % 15);
+    };
+
     const handleCreateLiveWithFile = () => {
         const {province, districts, wards, selected} = adCode.current;
         if (!adCode.current || (!province && districts.length === 0 && wards.length === 0 && selected.length === 0)) {
             return Notify.error(`Chưa chọn địa điểm phát`);
         }
         if (!state.file) return Notify.error('Chưa file nào được chọn');
-        if (!content.current) return Notify.error('Chưa điền nội dung phát trực tiếp');
         const formatTime = "HH:mm:ss";
         ModalAntd.confirm({
             title: 'Nhắc nhở',
@@ -87,11 +97,16 @@ const Emergency = React.memo((props) => {
             okText: "Xác nhận",
             zIndex: 10000,
             onOk: () => {
+                const currentTime = moment().add(formatTimeCurrent(), 'second');
+                if (time.current) {
+                    const getSecondTime = time.current.format(formatTime).split(":")[2];
+                    time.current = time.current.clone().add(formatTimeCurrent(getSecondTime), 'second');
+                }
                 const data = {
-                    title: content.current,
+                    title: content.current ? content.current : `Chương trình khẩn cấp từ file ${state?.file.title}`,
                     adTree: adCode.current,
-                    timeStart: time.current ? time.current.format(formatTime) : null,
-                    timeEnd: time.current ? time.current.clone().add(state.file.duration, 'seconds').format(formatTime) : null,
+                    timeStart: time.current ? time.current.format(formatTime) : currentTime.format(formatTime),
+                    timeEnd: time.current ? time.current.clone().add(state.file.duration, 'seconds').format(formatTime) : currentTime.clone().add(state.file.duration, 'seconds').format(formatTime),
                     sourceStream: {
                         sourceType: 7,
                         file: state.file.id
@@ -126,6 +141,7 @@ const Emergency = React.memo((props) => {
             script.src = '/broadcast-calendar.js';
             document.head.appendChild(script);
         }
+        setData(adCode)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
 
@@ -150,6 +166,7 @@ const Emergency = React.memo((props) => {
                                 <TreeAdministrative
                                     disabled={state.disabledTree}
                                     adCode={adCode}
+                                    setData={setData}
                                 />
                             </Tabs.TabPane>
                             <Tabs.TabPane
@@ -168,7 +185,14 @@ const Emergency = React.memo((props) => {
                         </Tabs>
                     </div>
                     <div className="modal_right-content">
-                        <Tabs defaultActiveKey="1" onChange={onChangeTypeEmergency}>
+                        <Tabs defaultActiveKey="1"
+                              onChange={onChangeTypeEmergency}
+                              onTabClick={() => {
+                                  setState((prev) => ({
+                                      ...prev,
+                                      fileOrLocation: prev.typeEmergency === '1' ? '2' : '1'
+                                  }))
+                        }}>
                             <Tabs.TabPane
                                 disabled={state.disabledTree}
                                 key="1"
@@ -183,7 +207,7 @@ const Emergency = React.memo((props) => {
                                 />
                             </Tabs.TabPane>
                             <Tabs.TabPane
-                                disabled={state.disabledTree}
+                                disabled={!data[0]}
                                 key="2"
                                 tab={<TabPaneLabel icon={faFileAudio} label="Từ File"/>}
                             >

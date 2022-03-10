@@ -99,7 +99,7 @@ const ListDivisionComponent = (props) => {
                 value={state.currentAdCode[keyValue]}
                 key={i}
                 dropdownMatchSelectWidth={false}
-                onChange={(value, opData) => onSelect(value, opData, keyValue)}
+                onSelect={(value, opData) => onSelect(value, opData, keyValue)}
                 placeholder={title}
             >
                 {
@@ -168,7 +168,7 @@ const SearchBox = (props) => {
     return (
         <Input.Search
             defaultValue={searchString}
-            placeholder="Tìm kiếm..."
+            placeholder="Tìm kiếm tài khoản..."
             onSearch={onSearchString}
             onChange={onChangeSearch}
         />

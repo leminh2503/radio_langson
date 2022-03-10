@@ -135,7 +135,7 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
         datetimeEnd: moment().add(20, 'minutes'),
         administrative_code: "",
         typeRadio: 0,
-        location: 1
+        location: null,
     }).current;
 
     const dateArrays = useRef([]);
@@ -181,14 +181,6 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
                 // {id: 1, title: "Đài Tỉnh", visible: division === 2 || division === 3},
                 // {id: 2, title: "Đài Huyện", visible: division === 3}
             ]
-        },
-        {
-            visible: Number(data?.typeRadio) === 0,
-            label: options[data?.typeRadio]?.label,
-            type: 'select',
-            keyValue: "location",
-            required: true,
-            options: options[data?.typeRadio]?.data
         }
     ];
 
@@ -222,7 +214,19 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
                 });
                 return;
             }
-            setData(initData);
+            apiChannel.getListChannel((err, res) => {
+                if (res) {
+                    setData(prev => ({
+                        ...prev,
+                        location: res[0]?.id
+                    }))
+                } else {
+                    setData(prev => ({
+                        ...prev,
+                        location: 0
+                    }));
+                }
+            });
         }
         return () => setIsLast(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps

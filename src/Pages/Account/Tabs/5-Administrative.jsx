@@ -51,13 +51,18 @@ const ModalCreateAd = ({
     const onChangeInput = e => {
         setAdString(e.target.value);
     };
-
     const handleBeforeOk = () => {
         const code = currentAd?.code ?? '';
+        const format = /s[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
         if (!code) return;
         setLoading(true);
         if (adString.trim().length === 0) {
             Notify.error(`${nameWithType[typeName]} không được để trống`);
+            setLoading(false);
+            return;
+        }
+        if(format.test(adString)) {
+            Notify.error(`${nameWithType[typeName]} không được chứa kí tự đặc biệt`);
             setLoading(false);
             return;
         }
@@ -373,6 +378,9 @@ const EditableCell = ({
                         {
                             required: true,
                             message: `Không được để trống trường ${title}!`
+                        },{
+                            pattern: /([^!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])([^0-9])$/g,
+                            message: `${title} chứa số hoặc kí tự đặc biệt`,
                         }
                     ]}>
                     <Input/>
@@ -418,7 +426,7 @@ const Administrative = () => {
             case 2:
                 return 'Phường/Xã/Thị trấn';
             case 3:
-                return 'ĐĐ/Xóm/Khu dân cư/Tổ';
+                return 'Làng/Xóm/Khu dân cư/Tổ';
             default:
                 return null;
         }
@@ -443,9 +451,10 @@ const Administrative = () => {
         setEditingKey('');
     }, []);
 
-    const save = async code => {
+    const save = async (code, division) => {
         try {
             const row = await form.validateFields();
+            const format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
             const newData = [...state.data];
             const index = newData.findIndex(item => code === item.code);
             if (index > -1) {
@@ -453,6 +462,12 @@ const Administrative = () => {
                 if (row?.nameWithType === newData[index]?.nameWithType) {
                     setEditingKey('');
                     return;
+                }
+                // if(format.test(row.name)) {
+                //     return Notify.error(`${renderNameAd(division - 1)} chứa kí tự đặc biệt`)
+                // }
+                if (row?.name.trim().length === 0) {
+                    return Notify.error(`Tên quận huyện không được để trống`);
                 }
                 apiAdministrative.editAdministrative(
                     {
@@ -523,7 +538,7 @@ const Administrative = () => {
                     return editable ? (
                         <Row className="justify-content-center">
                             <Button
-                                onClick={() => save(record?.code)}
+                                onClick={() => save(record?.code, record?.division)}
                                 className="mr-2 row-all-center"
                                 icon={<SaveOutlined/>}>
                                 Lưu

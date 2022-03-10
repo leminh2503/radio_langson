@@ -11,6 +11,7 @@ import CustomTable                                        from '../../../Compone
 import {nameWithType}                                     from '../Etc/Etc';
 import apiThread                                          from '../../../Api/Thread/Thread';
 import _                                                  from 'lodash';
+import Notify from "../../../Utils/Notify/Notify";
 
 const ModalCreateAd = ({currentAd, onOk, onCancel, visible}) => {
     const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ const ModalCreateAd = ({currentAd, onOk, onCancel, visible}) => {
     };
 
     const handleBeforeOk = () => {
-        const parent = currentAd?.id;
+        const parent = currentAd.length === 1 ? null : currentAd?.id;
         setLoading(true);
         apiThread.createThread({
             parent, name: adString
@@ -82,7 +83,7 @@ const Category = () => {
         data: [], isLoading: true, dataBreadCrumb: [], visibleModalNew: false
     });
     const renderNameAd = useCallback(() => {
-        return state.data[0]?.parent === 1 ? 'Cha' : 'Con';
+        return state.data[0]?.parent ? 'Con' : 'Cha';
     }, [state.data]);
 
     const currentAd = useMemo(() => {
@@ -103,6 +104,9 @@ const Category = () => {
                 if (row?.name === newData[index]?.name) {
                     setEditingKey('');
                     return;
+                }
+                if (row?.name.trim().length === 0) {
+                    return Notify.error(`Tên danh mục không được để trống`);
                 }
                 apiThread.editThread({
                     id, name: row?.name
@@ -139,7 +143,6 @@ const Category = () => {
     const onDelete = (record) => {
         const code = state.dataBreadCrumb[state.dataBreadCrumb.length - 1]?.id ?? '';
         const id = record?.id ?? '';
-        if (!code) return;
         setState(prev => ({
             ...prev, isLoading: true
         }));
@@ -243,8 +246,7 @@ const Category = () => {
     const onRow = useCallback((record, rowIndex) => {
         return {
             onDoubleClick: e => {
-                const parent = currentAd?.parent ?? '';
-                if (parent) return;
+                if (state.dataBreadCrumb.length === 2) return;
                 if (e.target.tagName === 'TD' || e.target.tagName === 'LABEL') {
                     setState(prev => ({
                         ...prev, dataBreadCrumb: [...prev.dataBreadCrumb, record], isLoading: true
@@ -255,25 +257,41 @@ const Category = () => {
         };
     });
 
-    const getMoreAd = (id) => {
-        apiThread.getThread({
-            parent: id
-        }, (err, res) => {
-            if (res) {
-                setState(prev => ({
-                    ...prev, data: res, isLoading: false
-                }));
-            } else {
-                setState(prev => ({
-                    ...prev, idLoading: false
-                }));
-            }
-        });
+    const getMoreAd = (id=null) => {
+        if(id) {
+            apiThread.getThread({
+                parent: id
+            }, (err, res) => {
+                if (res) {
+                    setState(prev => ({
+                        ...prev, data: res, isLoading: false
+                    }));
+                } else {
+                    setState(prev => ({
+                        ...prev, idLoading: false
+                    }));
+                }
+            });
+        } else {
+            apiThread.getThread({
+                parent__isnull: true
+            }, (err, res) => {
+                if (res) {
+                    setState(prev => ({
+                        ...prev, data: res, isLoading: false
+                    }));
+                } else {
+                    setState(prev => ({
+                        ...prev, idLoading: false
+                    }));
+                }
+            });
+        }
     };
 
     useEffect(() => {
-        apiThread.getThreadById({
-            id: 1
+        apiThread.getThread({
+            parent__isnull: true,
         }, (err, res) => {
             if (res) {
                 setState(prev => ({
@@ -281,12 +299,11 @@ const Category = () => {
                 }));
             }
         });
-        getMoreAd(1);
+        getMoreAd();
     }, []);
 
     const onCreateAd = useCallback(() => {
         const parent = state.dataBreadCrumb[state.dataBreadCrumb.length - 1]?.id ?? '';
-        if (!parent) return;
         setState(prev => ({
             ...prev, isLoading: true, visibleModalNew: false
         }));

@@ -1,16 +1,22 @@
-import React, {useRef, useState}                                     from 'react';
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from "reactstrap";
-import {Image, Input, Row}                                           from "antd";
-import moment                                                        from "moment";
+import React, { useRef, useState } from 'react';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
+import { Image, Input, Row, Select } from "antd";
+import moment from "moment";
 
-import ImageSchedule      from "../../../Assets/icon/schedule.png";
-import CustomCalendar     from "../../../Components/CustomTag/CustomCalendar";
+import ImageSchedule from "../../../Assets/icon/schedule.png";
+import CustomCalendar from "../../../Components/CustomTag/CustomCalendar";
 import TreeAdministrative from "../Tree/TreeAdministrative";
-import Notify             from "../../../Utils/Notify/Notify";
-import apiCalendar        from "../../../Api/Calendar/Calendar";
+import Notify from "../../../Utils/Notify/Notify";
+import apiCalendar from "../../../Api/Calendar/Calendar";
 
 const RepeatCalendar = React.memo((props) => {
-    const {isOpen, onClose, selectedCalendar, reFetchData, inRadioProgram} = props;
+
+    const { Option } = Select
+    function handleChange(value) {
+        console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+      }
+
+    const { isOpen, onClose, selectedCalendar, reFetchData, inRadioProgram } = props;
 
     const adTree = useRef('');
 
@@ -20,14 +26,12 @@ const RepeatCalendar = React.memo((props) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    console.log(dateArrays)
+
     const handleBeforeOk = () => {
-        const {province, districts, wards, selected} = adTree.current;
+        const { province, districts, wards, selected } = adTree.current;
         if (!adTree.current || (!province && districts?.length === 0 && wards?.length === 0 && selected?.length === 0)) {
             Notify.error('Chưa chọn địa điểm để lặp lịch');
-            return;
-        }
-        if (!titleCalendar.current) {
-            Notify.error('Chưa điền tên lịch');
             return;
         }
         if (dateArrays.current.length === 0) {
@@ -40,7 +44,7 @@ const RepeatCalendar = React.memo((props) => {
             date_loop: dateArrays.current.map(d => moment(d).format("YYYY-MM-DD")),
             adTree: {
                 ...adTree.current,
-                title: titleCalendar.current
+                title: titleCalendar.current ? titleCalendar.current : `Lịch lặp ngày ${moment(selectedCalendar?.dateSchedule).format("DD/MM/YYYY")}`
             }
         }, (err, res) => {
             if (res) {
@@ -57,7 +61,7 @@ const RepeatCalendar = React.memo((props) => {
     };
 
     return (
-        <Modal isOpen={isOpen} style={{maxWidth: '750px', overflow: 'auto'}}>
+        <Modal isOpen={isOpen} style={{ maxWidth: '750px', overflow: 'auto' }}>
             <ModalHeader toggle={onClose}>
                 Lặp lịch: " {selectedCalendar?.adTree?.title} "
                 ngày {moment(selectedCalendar?.dateSchedule).format("DD/MM/YYYY")}
@@ -95,7 +99,16 @@ const RepeatCalendar = React.memo((props) => {
                             </div>
                         </Row>
                         <Row className="px-3 py-1 modal_repeat-date-calendar">
-                            <CustomCalendar dateArrays={dateArrays}/>
+                            <CustomCalendar dateArrays={dateArrays} />
+                            <Select
+    labelInValue
+    defaultValue={{ value: 'lucy' }}
+    style={{ width: 120 }}
+    onChange={handleChange}
+  >
+    <Option value="jack">Jack (100)</Option>
+    <Option value="lucy">Lucy (101)</Option>
+  </Select>
                         </Row>
                     </div>
                 </Row>
@@ -119,7 +132,7 @@ const RepeatCalendar = React.memo((props) => {
                     Xác nhận
                     {
                         isLoading &&
-                        <Spinner size="sm" className="ml-1"/>
+                        <Spinner size="sm" className="ml-1" />
                     }
                 </Button>
             </ModalFooter>

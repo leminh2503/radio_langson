@@ -89,14 +89,13 @@ const ModalBroadcastSchedule = React.memo(({
                                                editedOverride
                                            }) => {
     const _requiredFields = [
-        {label: "Tên chương trình", key: 'title'},
         {label: "Thời gian bắt đầu", key: 'timeStart', isLive: isLive?.current},
         {label: "Thời gian kết thúc", key: 'timeEnd', isLive: isLive?.current}
     ];
 
     const _listInput = [
         {label: "Tên file", type: 'text', keyValue: "fileName", readOnly: true},
-        {label: "Tên chương trình", type: 'text', keyValue: "title", required: true},
+        {label: "Tên chương trình", type: 'text', keyValue: "title"},
         {label: "Thời lượng của File", type: 'text', keyValue: "duration", readOnly: true},
         {
             label: "Thời gian bắt đầu",
@@ -105,13 +104,6 @@ const ModalBroadcastSchedule = React.memo(({
             required: true,
             visible: isLive?.current !== true
         },
-        {
-            label: "Thời gian kết thúc",
-            type: 'text',
-            keyValue: "timeEnd",
-            required: true,
-            visible: isLive?.current !== true
-        }
     ];
 
     const initData = useRef({
@@ -149,6 +141,7 @@ const ModalBroadcastSchedule = React.memo(({
         }
         const dataModal = {
             ...data,
+            title: data?.title ? data.title : data?.fileName,
             date_loop: dateArrays.current.length > 0 ? dateArrays.current : undefined,
             fileId: undefined,
             fileName: undefined,
@@ -217,7 +210,6 @@ const ModalBroadcastSchedule = React.memo(({
             setData(({
                 ...initData,
                 fileId: dataEdit?.id,
-                title: dataEdit?.title,
                 fileName: dataEdit?.title,
                 timeStart,
                 timeEnd,
@@ -279,8 +271,8 @@ const ModalBroadcastSchedule = React.memo(({
                     <Row>
                         {
                             _listInput.map(({label, type, keyValue, options, required, visible}, index) => (
-                                ((keyValue === 'timeStart' || keyValue === 'timeEnd') && visible) &&
-                                <Col md={6} key={index}>
+                                ((keyValue === 'timeStart') && visible) &&
+                                <Col md={12} key={index}>
                                     <CustomInput
                                         label={label}
                                         type={type}

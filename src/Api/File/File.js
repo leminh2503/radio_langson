@@ -39,17 +39,19 @@ function getInfoFile(data, callback) {
         .catch(error => {
             displayError(error);
             return callback(error);
-        });
+        })
 }
 
 function createFile(data, callback) {
     const formData = new FormData();
-    const {url, title, parent, duration, tags} = data;
+    const {url, title, parent, duration, tags, thread1, thread2} = data;
     formData.append("url", url);
     formData.append("title", title);
     formData.append("parent", parent);
     formData.append("duration", parseInt(duration));
     formData.append("contentType", "mp3");
+    if(thread1) formData.append('thread1', thread1);
+    if(thread2) formData.append('thread2', thread2);
     if (tags) formData.append("tags", tags);
     rootAPI().post(path.file.local, formData)
         .then(res => {

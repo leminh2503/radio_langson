@@ -43,7 +43,7 @@ const Schedule = React.memo((props) => {
 
     const dispatch = useDispatch();
 
-    const isDefaultCalendar = selectedCalendar?.default_calendar;
+    const isDefaultCalendar = selectedCalendar?.defaultCalendar;
 
     const ownerData = useRef(_ownerData(division)).current;
 
@@ -171,8 +171,6 @@ const Schedule = React.memo((props) => {
         handleForwardToEditor
     });
 
-    console.log(selectedCalendar)
-
     const renderMenuDescription = (
         <Menu className="my-2 info-radio border p-2">
             {
@@ -224,7 +222,7 @@ const Schedule = React.memo((props) => {
                             <a>Quản lý lịch phát</a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item className="text-bold-5">
-                            {selectedCalendar?.ad_tree?.title ?? 'Không tên'}
+                            {selectedCalendar?.adTree?.title ?? 'Không tên'}
                         </Breadcrumb.Item>
                     </Breadcrumb>
                 </div>

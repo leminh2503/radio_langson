@@ -34,6 +34,9 @@ const Map = React.memo(({data: dataDevices, setSelectedDevice}) => {
             }
         });
     }, []);
+    const zoom = useRef({
+        default: 9
+    }).current;
 
     const selectDeviceOnMap = () => {
         const allMarkers = document.querySelectorAll("img.leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive");
@@ -84,9 +87,9 @@ const Map = React.memo(({data: dataDevices, setSelectedDevice}) => {
             case 1:
                 return "4b8102";
             case 2:
-                return "fde64b";
-            case 3:
                 return "9b7bff";
+            case 3:
+                return "fde64b";
             case 99:
                 return "d0515b";
             default:

@@ -165,7 +165,7 @@ const Sidebar = React.memo((props) => {
         apiFile.createFile({
             url: dataModal?.file,
             parent: treeData.selectedItem?.code ?? treeData.selectedItem?.id,
-            title: dataModal?.title,
+            title: dataModal.title ? dataModal?.title : dataModal?.file?.name,
             duration: parseInt(dataModal?.duration),
             tags: dataModal?.tags
         }, (err, res) => {

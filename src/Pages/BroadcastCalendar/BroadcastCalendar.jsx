@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Button, Row, Tabs, Tooltip,Modal} from 'antd';
-import {useHistory} from 'react-router-dom';
-import moment from 'moment';
-import {useSelector} from 'react-redux';
-import _ from 'lodash';
+import {Button, Row, Tabs, Tooltip, Modal}                        from 'antd';
+import {useHistory}                                               from 'react-router-dom';
+import moment                                                     from 'moment';
+import {useSelector}                                              from 'react-redux';
+import _                                                          from 'lodash';
 import {
     DeleteOutlined,
     DiffOutlined,
@@ -13,21 +13,21 @@ import {
     UnlockOutlined,
     CheckCircleOutlined,
     SafetyCertificateOutlined
-} from '@ant-design/icons';
+}                                                                 from '@ant-design/icons';
 
-import useModalManager from '../../Components/ModalManger/useModalManager';
-import Live from './Modal/Live';
-import Emergency from './Modal/Emergency';
-import LiveAndEmergency from './ActionsBar/LiveAndEmergency';
-import ActionsBar from './ActionsBar/ActionsBar';
-import CustomTable from '../../Components/CustomTag/CustomTable';
-import apiCalendar from '../../Api/Calendar/Calendar';
-import Notify from '../../Utils/Notify/Notify';
-import Alert from '../../Utils/Notify/Alert';
-import DetailAdministrative from './Modal/DetailAdministrative';
+import useModalManager                    from '../../Components/ModalManger/useModalManager';
+import Live                               from './Modal/Live';
+import Emergency                          from './Modal/Emergency';
+import LiveAndEmergency                   from './ActionsBar/LiveAndEmergency';
+import ActionsBar                         from './ActionsBar/ActionsBar';
+import CustomTable                        from '../../Components/CustomTag/CustomTable';
+import apiCalendar                        from '../../Api/Calendar/Calendar';
+import Notify                             from '../../Utils/Notify/Notify';
+import Alert                              from '../../Utils/Notify/Alert';
+import DetailAdministrative               from './Modal/DetailAdministrative';
 import {_listStatusCalendar, _liveStatus} from '../RadioProgram/Etc/Etc';
-import RepeatCalendar from './Modal/RepeatCalendar';
-import {defaultDivision} from '../../Config/division';
+import RepeatCalendar                     from './Modal/RepeatCalendar';
+import {defaultDivision}                  from '../../Config/division';
 
 const BroadcastCalendar = React.memo(() => {
     const history = useHistory();
@@ -43,7 +43,7 @@ const BroadcastCalendar = React.memo(() => {
     const page = useRef(historyState?.page ?? {total: 1, current: 1, size: 50});
 
     const admCode = useRef(
-        historyState?.admCode ?? {isDPT: false, value: null},
+        historyState?.admCode ?? {isDPT: false, value: null}
     );
 
     const listArrayDivision = useRef([]);
@@ -98,7 +98,7 @@ const BroadcastCalendar = React.memo(() => {
         status: historyState?.status ?? 'all',
         tab: historyState?.isDefaultCalendar ? '2' : '1',
         isDefaultCalendar: historyState?.isDefaultCalendar ?? false,
-        user: user,
+        user: user
     });
 
     const rowSelection = {
@@ -308,6 +308,15 @@ const BroadcastCalendar = React.memo(() => {
             },
         );
     };
+    useEffect(() => {
+        if (state.isLoading) {
+            if (historyState) {
+                history.replace();
+            }
+            handleGetCalendar();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.isLoading]);
 
     const handleChangeStatusCalendar = (id, user) => {
         Modal.confirm({
@@ -359,8 +368,6 @@ const BroadcastCalendar = React.memo(() => {
             }
         });
     };
-
-    console.log(user)
 
     const columns = useMemo(() => {
         return [
@@ -500,7 +507,7 @@ const BroadcastCalendar = React.memo(() => {
                                 ? ''
                                 : 'Nhấn để lặp lịch',
                             disabled: data?.liveEmeCalendar,
-                            visible: division === 1 && !state.isDefaultCalendar,
+                            visible: !state.isDefaultCalendar,
                             icon: <DiffOutlined />,
                             onClick: () => openModalRepeatCalendar(),
                         },

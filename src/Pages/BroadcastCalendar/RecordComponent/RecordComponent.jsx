@@ -4,6 +4,7 @@ import ss                               from "socket.io-stream";
 import io                               from "socket.io-client";
 import {Card, Input, Row}               from "antd";
 import mqtt                             from "mqtt";
+import moment                           from 'moment';
 
 import apiProgram from "../../../Api/Program/Program";
 import Notify     from "../../../Utils/Notify/Notify";
@@ -66,16 +67,18 @@ const RecordComponent = React.memo((props) => {
         });
         connectSocket.on("disconnect", () => {
             stopRecording('crash');
-            Notify.error("Ngắt kết nối trực tiếp");
+            Notify.success("Ngắt kết nối trực tiếp");
         });
     };
 
     const requestOtp = () => {
+        const formatTime = "HH:mm:ss";
+        const currentTime = moment().format(formatTime);
         if (navigator?.mediaDevices) {
             navigator.mediaDevices.getUserMedia({audio: true})
                 .then((stream) => {
                     apiProgram[type === 'live' ? 'createLive' : 'createEmergency']({
-                        title: content.current,
+                        title: content.current ? content.current : `Chương trình ${type === 'live' ? 'trực tiếp' : 'khẩn cấp'} từ mic lúc ${currentTime}`,
                         broadcastCalendar: selectedCalendar?.id,
                         adTree: adCode.current,
                         sourceStream: {sourceType: type === 'live' ? 6 : 8},
@@ -91,9 +94,9 @@ const RecordComponent = React.memo((props) => {
                         }
                     });
                 }).catch(() => {
-                    setIsLoading(false);
-                    Notify.error('Thiết bị thu âm không được cho phép');
-                });
+                setIsLoading(false);
+                Notify.error('Thiết bị thu âm không được cho phép');
+            });
         } else {
             setIsLoading(false);
             Notify.error('Không tìm thấy thiết bị thu âm');
@@ -101,7 +104,7 @@ const RecordComponent = React.memo((props) => {
     };
 
     const startRecording = (stream) => {
-        console.log('a')
+        console.log('a');
         onDisableTreeAdministrative(true);
         setIsRecording(true);
         setIsLoading(false);
@@ -172,11 +175,7 @@ const RecordComponent = React.memo((props) => {
                 return Notify.error(`Chưa chọn địa điểm phát`);
             }
         }
-        if (!content.current) {
-            if (!showInvalidContent) setShowInvalidContent(true);
-            Notify.error("Nội dung không được để trống");
-            return;
-        }
+
         Alert.confirm(`Xác nhận phát ${typeLive} từ Mic ?`, (check) => {
             if (check) {
                 handleRecord();
@@ -244,16 +243,17 @@ const RecordComponent = React.memo((props) => {
         <div className="modal_right-content_live-component">
             <Row className="mb-1">
                 <div className="text-bold-5 mb-1">
-                    * <u>Nội dung phát {typeLive}:</u>
+                    <u>Nội dung phát {typeLive}:</u>
                 </div>
                 <Input
                     placeholder={`Điền nội dung`}
                     onChange={onChangeContent}
                 />
-                {
-                    showInvalidContent &&
-                    <AlertValid message="Nội dung không được để trống"/>
-                }
+                <div className="mt-2">
+                    <i style={{color: 'red'}}>
+                        * Không điền nội dung sẽ lấy tên nội dung là giờ phát
+                    </i>
+                </div>
             </Row>
             <Card
                 className={`modal_right-content_live-component_card border row-all-center ${classNames}`}

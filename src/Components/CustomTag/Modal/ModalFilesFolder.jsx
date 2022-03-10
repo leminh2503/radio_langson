@@ -1,10 +1,19 @@
-import React, {useRef, useState}                                                              from "react";
+import React, {useRef, useState, useEffect}                                                   from "react";
 import {Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from "reactstrap";
 
-import Notify   from "../../../Utils/Notify/Notify";
-import {Select} from "antd";
+import Notify          from "../../../Utils/Notify/Notify";
+import {Select}        from "antd";
+import SelectComponent from "../../../Pages/ContentManagement/Modal/Select";
 
-const CustomInput = React.memo(({title, field, value, type, onChange, placeholder, isLoading}) => {
+const CustomInput = React.memo(({
+                                    title,
+                                    field,
+                                    value,
+                                    type,
+                                    onChange,
+                                    placeholder,
+                                    isLoading
+                                }) => {
     return (
         <FormGroup>
             <Label
@@ -37,7 +46,7 @@ const CustomInput = React.memo(({title, field, value, type, onChange, placeholde
                         onChange={(e) => onChange(e.target.files[0])}
                     />
                     :
-                    type !== 'tags' &&
+                    type !== 'tags' && type !== 'select' &&
                     <Input
                         disabled={isLoading}
                         placeholder={placeholder}
@@ -50,9 +59,14 @@ const CustomInput = React.memo(({title, field, value, type, onChange, placeholde
 });
 
 const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem, onOk, folderInfo}) => {
+
     if (typeItem === 'administrative') {
         typeItem = 'folder';
     }
+
+    const [parentThread, setParentThread] = useState();
+
+    const [childThread, setChildThread] = useState();
 
     const listPlaceholder = {
         file: 'Tên file',
@@ -65,7 +79,9 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
             file: [
                 {title: 'Chọn file', field: 'file', type: 'file', duration: 0},
                 {title: 'Tên file', field: 'title', placeholder: listPlaceholder.file},
-                {title: 'Các thẻ tag', field: 'tags', type: 'tags', placeholder: listPlaceholder.tags}
+                {title: 'Các thẻ tag', field: 'tags', type: 'tags', placeholder: listPlaceholder.tags},
+                {title: 'Danh mục', field: 'select', type: 'select'}
+
             ],
             folder: [
                 {title: 'Tên thư mục', field: 'title', placeholder: listPlaceholder.folder}
@@ -74,7 +90,8 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
         edit: {
             file: [
                 {title: 'Tên file', field: 'title', placeholder: listPlaceholder.file},
-                {title: 'Các thẻ tag', field: 'tags', type: 'tags', placeholder: listPlaceholder.tags}
+                {title: 'Các thẻ tag', field: 'tags', type: 'tags', placeholder: listPlaceholder.tags},
+                {title: 'Danh mục', field: 'select', type: 'select'}
             ],
             folder: [
                 {title: 'Tên thư mục', field: 'title', placeholder: listPlaceholder.folder}
@@ -97,13 +114,20 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
         file: {
             title: '',
             file: '',
-            tag: ''
+            tag: '',
+            thread1: {},
+            thread2: {}
         }
     }).current;
 
     const [data, setData] = useState();
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const initCurrentAdCode = useRef({
+        parentThread: null,
+        childThread: null
+    });
 
     React.useEffect(() => {
         if (visible) {
@@ -112,6 +136,8 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
                     setData(initData.folder);
                 } else if (typeItem === 'file') {
                     setData(initData.file);
+                    setChildThread(null);
+                    setParentThread(null);
                 }
             } else if (typeModal === 'edit') {
                 const newData = {
@@ -138,7 +164,12 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
             reader.onload = (e) => {
                 audio.src = e.target.result;
                 audio.addEventListener('loadedmetadata', () => {
-                    setData(prev => ({...prev, duration: audio.duration}));
+                    setData(prev => {
+                        return {
+                            ...prev,
+                            duration: audio.duration
+                        };
+                    });
                 }, false);
             };
             reader.readAsDataURL(data.file);
@@ -147,10 +178,13 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
     }, [data?.file, typeModal]);
 
     const handleOk = () => {
-        if (data?.title === '') {
-            Notify.error('Tên không được để trống');
-            return;
+        if (typeItem === 'folder') {
+            if (data?.title === '') {
+                Notify.error('Tên không được để trống');
+                return;
+            }
         }
+
         if (typeItem === 'file' && typeModal === 'new') {
             if (data?.file === '' || data?.file === undefined) {
                 Notify.error('Chưa chọn tệp tin nào');
@@ -158,6 +192,7 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
             }
         }
         let tags = "";
+        let newFileName = data?.file?.name;
         if (typeItem === 'file') {
             (data?.tags?.length > 0 ? data.tags : []).forEach((t, i) => {
                 if (i === 0) {
@@ -166,14 +201,20 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
                     tags = `${tags}#${t}`;
                 }
             });
+            if (data?.title === '') {
+                setData(prev => ({
+                    ...prev,
+                    title: newFileName
+                }));
+            }
         }
         setIsLoading(true);
         if (typeModal === 'new') {
-            onOk(data, setIsLoading);
+            onOk(data, setIsLoading, parentThread?.id, childThread?.id, newFileName);
             return;
         }
         if (folderInfo?.type === 'file') {
-            onOk({...data, tags}, setIsLoading, 'e-File');
+            onOk({...data, tags, thread1: parentThread?.id, thread2: childThread?.id}, setIsLoading, 'e-File');
         } else {
             onOk(data, setIsLoading, 'e-Folder');
         }
@@ -194,7 +235,9 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
             <ModalBody>
                 {
                     (listField[typeModal][typeItem] ?? []).map(({title, field, type, placeholder}, i) => (
+
                         <CustomInput
+                            typeModal={typeModal}
                             value={data !== undefined ? data[field] : null}
                             key={i}
                             title={title}
@@ -210,6 +253,21 @@ const ModalFilesFolder = React.memo(({visible, handleClose, typeModal, typeItem,
                             }}
                         />
                     ))
+                }
+                {
+                    typeItem === 'file' &&
+                    <div className="d-flex">
+                        <SelectComponent
+                            visible={visible}
+                            initCurrentAdCode={initCurrentAdCode}
+                            setParentThread={setParentThread}
+                            setChildThread={setChildThread}
+                            typeModal={typeModal}
+                            thread1={parentThread}
+                            thread2={childThread}
+                            folderInfo={folderInfo}
+                        />
+                    </div>
                 }
             </ModalBody>
             <ModalFooter>

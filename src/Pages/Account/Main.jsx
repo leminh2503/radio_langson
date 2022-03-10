@@ -6,6 +6,7 @@ import HistoryWork        from "./Tabs/3-HistoryWork";
 import UserManagement     from "./Tabs/2-UserManagement";
 import GeneralConfig      from "./Tabs/4-GeneralConfig";
 import Administrative     from "./Tabs/5-Administrative";
+import Category           from "./Tabs/7-Category";
 
 const Main = React.memo(({isOpenPage}) => {
     const renderPage = useCallback(() => {
@@ -22,6 +23,8 @@ const Main = React.memo(({isOpenPage}) => {
                 return <ChangePasswordTab/>;
             case "administrative":
                 return <Administrative/>;
+            case "category":
+                return <Category />
             default:
                 return null;
         }

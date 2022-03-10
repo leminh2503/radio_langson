@@ -81,6 +81,7 @@ td[role='gridcell'] {
 
 .schedule-cell-dimension.e-schedule .e-vertical-view .e-time-cells-wrap table td, .schedule-cell-dimension.e-schedule .e-vertical-view .e-work-cells {
   height: var(--size_per_lines-timeline);
+  z-index: 1;
 }
 
 .e-event-resize, .e-appointment.e-lib.e-draggable {

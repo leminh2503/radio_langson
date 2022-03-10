@@ -5,6 +5,48 @@
   height: calc(100vh - 70px);
   overflow: auto;
 
+  .dashboard_schedule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid #ebebeb;
+    height: 50px;
+  }
+  .schedule_day {
+    display: block;
+    width: 14%;
+    text-align: center;
+    line-height: 24px;
+    white-space: nowrap;
+    padding: 10px;
+    overflow: hidden;
+    font-weight: bold;
+    border-bottom: 1px solid #ebebeb;
+    cursor: pointer;
+  }
+  .time {
+    font-size: .8125rem;
+    color: #316fbc;
+    width: 50px;
+    font-weight: 700;
+    border-right: 1px solid #d1d1d1;
+    padding: 3px 0;
+  }
+
+  .background {
+    background: #bfddf3;
+  }
+
+  .name {
+    width: calc(100% - 50px);
+    padding-left: 10px;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
   .box-shadow_custom {
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }

@@ -8,6 +8,7 @@ import L                                        from 'leaflet';
 import 'react-leaflet-fullscreen-control';
 import DeviceStatus             from "./DeviceStatus";
 import Users                    from "./Users";
+import ScheduleDashboards       from "./ScheduleDashboards"
 import { useState } from 'react';
 import apiMap                   from "../../../../Api/Map/Map"
 import apiUser                  from "../../../../Api/User/User"
@@ -85,7 +86,7 @@ const DoughnutAndMap = React.memo(({data}) => {
                 </MapContainer>
             </Col>
             <Col lg={3} className="w-100 px-1" style={{minHeight: '100%'}}>
-                <Users />
+                <ScheduleDashboards />
             </Col>
         </>
     );

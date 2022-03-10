@@ -265,17 +265,17 @@ const Main = React.memo(props => {
 
     useEffect(() => {
         currentPagination.current.page = 1;
-        setIsChangedPage(true)
+        setIsChangedPage(true);
         setSelectedRow(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedFolder]);
+    }, [selectedFolder,handleOpenModalDetails]);
 
     useEffect(() => {
         if (listDataMain?.id) {
             handleOpenFolder(selectedFolder, currentPagination.current.page);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isChangedPage]);
+    }, [isChangedPage,handleOpenModalDetails]);
 
     const handleExportEquipment = () => {
         apiEquipment.exportEquipment({}, (err, res) => {
@@ -372,6 +372,7 @@ const Main = React.memo(props => {
                 d => d.id === selectedRow
             )[0];
     }, [selectedRow, listDataMain.data, listDataMain.id]);
+
     const handleChangeVol = (value, data) => {
         apiEquipment.controlEquipment(
             {
@@ -391,6 +392,7 @@ const Main = React.memo(props => {
             handleChangeVol(20, data);
         }
     };
+
     const columns = useMemo(() => {
         return [
             {
@@ -410,7 +412,7 @@ const Main = React.memo(props => {
             },
             {
                 title: 'Khu vực',
-                dataIndex: ['administrativeCode', 'name'],
+                dataIndex: ['administrativeCode', 'nameWithType'],
             },
             {
                 title: 'Thông tin chi tiết',
@@ -435,7 +437,8 @@ const Main = React.memo(props => {
             },
             {
                 title: 'Âm lượng',
-                render: (_, data,) => {
+                dataIndex: 'volume',
+                render: (_, data, index) => {
                     return (
                         <div className="d-flex align-items-center w-100 px-1">
                             <FontAwesomeIcon
@@ -449,14 +452,22 @@ const Main = React.memo(props => {
                             />
                             <div className="w-100 px-1">
                                 <Slider
-                                    defaultValue={
+                                    value={
                                         data?.volume > 100 || data?.volume < 0
                                             ? 20
                                             : data?.volume
                                     }
-                                    onAfterChange={(value) => {
-                                        handleChangeVol(value, data);
-                                    }}
+                                    key={index}
+                                    onChange={value =>
+                                        setListDataMain(prev => {
+                                            const copyPrev = JSON.parse(JSON.stringify(prev));
+                                            copyPrev.data[copyPrev.id][index].volume = value
+                                            return copyPrev;
+                                        })
+                                    }
+                                    onAfterChange={value =>
+                                        handleChangeVol(value, data)
+                                    }
                                 />
                             </div>
                         </div>
@@ -483,7 +494,7 @@ const Main = React.memo(props => {
                     moment(data?.created).format('DD/MM/YYYY HH:mm:ss')
             }
         ];
-    }, [convertProgram]);
+    }, [convertProgram,visibleModalDetails]);
 
     const rowSelection = useMemo(() => {
         return {
@@ -500,7 +511,7 @@ const Main = React.memo(props => {
             fetchDevice(selectedAd, 1, true);
         }, 5 * 1000);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchDevice]);
+    }, [fetchDevice, visibleModalDetails]);
     return (
         <div
             className={`equipment-management_size-content${

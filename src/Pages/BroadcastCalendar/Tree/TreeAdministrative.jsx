@@ -51,7 +51,7 @@ const findChildren = (dataMapped, key) => {
 };
 
 const TreeAdministrative = React.memo((props) => {
-    const {adCode, disabled} = props;
+    const {adCode, disabled, setData} = props;
 
     const user = useSelector(state => state.user);
 
@@ -147,6 +147,9 @@ const TreeAdministrative = React.memo((props) => {
 
     const onCheck = (checkedKeysValue) => {
         handleCheckedKeys(checkedKeysValue);
+        if(setData) {
+            setData(checkedKeysValue);
+        }
     };
 
     const updateTreeData = (list, key, children) => {

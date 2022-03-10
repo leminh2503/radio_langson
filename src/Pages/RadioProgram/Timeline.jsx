@@ -86,7 +86,7 @@ function Timeline(props) {
         selectedCalendar
     } = props;
 
-    const dateSchedule = selectedCalendar?.date_schedule ?? "";
+    const dateSchedule = selectedCalendar?.dateSchedule ?? "";
 
     const selectedProgram = useRef({});
 
@@ -140,12 +140,11 @@ function Timeline(props) {
         }
     };
 
-    console.log(selectedCalendar)
-
     const handleCreateProgram = (dataModal, setIsLoadingModal) => {
         const dataRequest = {
             ...dataModal,
-            id: selectedCalendar?.id ?? ""
+            title: dataModal?.title ?? dataModal?.fileName,
+            broadcastCalendar: selectedCalendar?.id ?? ""
         };
         apiProgram.createProgram(dataRequest, (err, res) => {
             if (res) {
@@ -239,7 +238,7 @@ function Timeline(props) {
 
     const handleOpenModalEditProgram = () => {
         closeDialogSchedule();
-        if (selectedProgram.current?.source_stream?.file) {
+        if (selectedProgram.current?.sourceStream?.file) {
             openModalEdit();
         } else {
             openModalEditForward();
@@ -265,10 +264,10 @@ function Timeline(props) {
                 setIsLoadingCalendar(true);
                 apiCalendar.lockCalendar({
                     id: selectedCalendar?.id,
-                    lock_status: nextLockStatus
+                    lockStatus: nextLockStatus
                 }, (err) => {
                     if (!err) {
-                        selectedCalendar.lock_status = nextLockStatus;
+                        selectedCalendar.lockStatus = nextLockStatus;
                         setIsChangedLockStatus(isChangedLockStatus + 1);
                         Notify.success(`${text} chương trình thành công`);
                     }
@@ -286,13 +285,13 @@ function Timeline(props) {
         closeDialogSchedule();
         Modal.confirm({
             title: 'Nhắc nhở',
-            content: `Xác nhận ${selectedProgram?.current.lock_status === 1 ? 'mở' : 'khóa'} chương trình ${selectedProgram?.current.title}?`,
+            content: `Xác nhận ${selectedProgram?.current.lockStatus === 1 ? 'mở' : 'khóa'} chương trình ${selectedProgram?.current.title}?`,
             okText: 'Xác nhận',
             onOk: () => {
                 setIsLoadingCalendar(true);
                 apiProgram.lockProgram({
                     id: selectedProgram.current?.id ?? "",
-                    lock_status: selectedProgram?.current.lock_status === 1 ? 2 : 1
+                    lock_status: selectedProgram?.current.lockStatus === 1 ? 2 : 1
                 }, (err, res) => {
                     if (res) {
                         scheduleObj.current.saveEvent({
@@ -394,7 +393,7 @@ function Timeline(props) {
             okText: 'Xác nhận',
             onOk: () => {
                 setIsLoadingCalendar(true);
-                const func = _liveStatus.includes(selectedProgram.current?.source_stream ?? "") ? "endLive" : "endEme";
+                const func = _liveStatus.includes(selectedProgram.current?.sourceStream ?? "") ? "endLive" : "endEme";
                 apiProgram[func]({
                     id: selectedProgram.current?.id ?? ""
                 }, (err, res) => {
@@ -461,11 +460,11 @@ function Timeline(props) {
     const dataHeaderTemplate = () => {
         const datetime = moment(dateSchedule);
 
-        const calendarLockStatus = selectedCalendar?.lock_status;
+        const calendarLockStatus = selectedCalendar?.lockStatus;
 
         const calendarStatus = selectedCalendar?.status;
 
-        const indexLockStatus = listIcons.findIndex(i => i?.lock_status === calendarLockStatus);
+        const indexLockStatus = listIcons.findIndex(i => i?.lockStatus === calendarLockStatus);
 
         const indexStatus = listIcons.findIndex(i => i?.status === calendarStatus);
 
@@ -559,7 +558,7 @@ function Timeline(props) {
     const customHeaderQuickPopups = (props) => {
         const visibleButton = !isEmeCalendar && !isDefaultCalendar;
         const listButtonsHeaderQuickPopup =
-            isEmeCalendar || [..._emeStatus, ..._liveStatus].includes(props.source_stream?.sourceType) ?
+            isEmeCalendar || [..._emeStatus, ..._liveStatus].includes(props.sourceStream?.sourceType) ?
                 listButtonsHeaderQuickPopupProgramEmeLiveCalendar({
                     closeDialogSchedule,
                     handleStopProgram: handleStopProgramLiveEme
@@ -607,29 +606,30 @@ function Timeline(props) {
             <div
                 className="timeline"
                 onDragOver={(e) => e.preventDefault()}
+                style={{zIndex: '1'}}
             >
-                <ScheduleComponent
-                    cssClass="schedule-cell-dimension"
-                    locale="vi"
-                    firstDayOfWeek={1}
-                    ref={t => scheduleObj.current = t}
-                    dragStart={(args) => args.cancel = true}
-                    resizeStart={(args) => args.cancel = true}
-                    eventSettings={{dataSource: newData, fields: _fieldsMapEj2Schedule}}
-                    dateHeaderTemplate={dataHeaderTemplate}
-                    select={onSelect}
-                    popupOpen={(args) => onPopupOpen(args, isDragging, selectedProgram)}
-                    actionBegin={onActionBegin}
-                    selectedDate={moment(dateSchedule)}
-                    quickInfoTemplates={{header: customHeaderQuickPopups}}
-                    timeScale={{
-                        enable: true,
-                        interval: 60,
-                        slotCount: configTimeline?.lines,
-                        minorSlotTemplate: majorMinorSlotTemplate,
-                        majorSlotTemplate: majorMinorSlotTemplate
-                    }}
-                >
+                   <ScheduleComponent
+                       cssClass="schedule-cell-dimension"
+                       locale="vi"
+                       firstDayOfWeek={1}
+                       ref={t => scheduleObj.current = t}
+                       dragStart={(args) => args.cancel = true}
+                       resizeStart={(args) => args.cancel = true}
+                       eventSettings={{dataSource: newData, fields: _fieldsMapEj2Schedule}}
+                       dateHeaderTemplate={dataHeaderTemplate}
+                       select={onSelect}
+                       popupOpen={(args) => onPopupOpen(args, isDragging, selectedProgram)}
+                       actionBegin={onActionBegin}
+                       selectedDate={moment(dateSchedule)}
+                       quickInfoTemplates={{header: customHeaderQuickPopups}}
+                       timeScale={{
+                           enable: true,
+                           interval: 60,
+                           slotCount: configTimeline?.lines,
+                           minorSlotTemplate: majorMinorSlotTemplate,
+                           majorSlotTemplate: majorMinorSlotTemplate
+                       }}
+                   >
                     <ViewsDirective>
                         <ViewDirective
                             isSelected
