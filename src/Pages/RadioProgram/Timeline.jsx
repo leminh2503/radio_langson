@@ -83,7 +83,8 @@ function Timeline(props) {
         isDefaultCalendar,
         isChangedStatusCalendar,
         isEmeCalendar,
-        selectedCalendar
+        selectedCalendar,
+        fetchProgramContinuously
     } = props;
 
     const dateSchedule = selectedCalendar?.dateSchedule ?? "";
@@ -187,6 +188,7 @@ function Timeline(props) {
             }
             return;
         }
+        setIsLoadingModal(true)
         apiProgram.editProgram(dataRequest, (err, res) => {
             if (res) {
                 scheduleObj.current.saveEvent({
@@ -199,6 +201,7 @@ function Timeline(props) {
                 } else if (visibleModalEditForward) {
                     closeModalEditForward();
                 }
+                setIsLoadingModal(false)
                 Notify.success('Sửa chương trình thành công');
             } else {
                 editedOverride.current = {editMode: true, programId: selectedProgram.current?.id};
@@ -265,10 +268,11 @@ function Timeline(props) {
                 apiCalendar.lockCalendar({
                     id: selectedCalendar?.id,
                     lockStatus: nextLockStatus
-                }, (err) => {
-                    if (!err) {
+                }, (err, res) => {
+                    if (res) {
+                        fetchProgramContinuously()
                         selectedCalendar.lockStatus = nextLockStatus;
-                        setIsChangedLockStatus(isChangedLockStatus + 1);
+                        setIsChangedLockStatus(nextLockStatus);
                         Notify.success(`${text} chương trình thành công`);
                     }
                     setIsLoadingCalendar(false);

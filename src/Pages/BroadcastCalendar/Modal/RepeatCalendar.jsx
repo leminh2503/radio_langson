@@ -1,22 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
-import { Image, Input, Row, Select } from "antd";
-import moment from "moment";
+import React, {useRef, useState}                                     from 'react';
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from "reactstrap";
+import {Image, Input, Row}                                           from "antd";
+import moment                                                        from "moment";
 
-import ImageSchedule from "../../../Assets/icon/schedule.png";
-import CustomCalendar from "../../../Components/CustomTag/CustomCalendar";
+import ImageSchedule      from "../../../Assets/icon/schedule.png";
+import CustomCalendar     from "../../../Components/CustomTag/CustomCalendar";
 import TreeAdministrative from "../Tree/TreeAdministrative";
-import Notify from "../../../Utils/Notify/Notify";
-import apiCalendar from "../../../Api/Calendar/Calendar";
+import Notify             from "../../../Utils/Notify/Notify";
+import apiCalendar        from "../../../Api/Calendar/Calendar";
 
 const RepeatCalendar = React.memo((props) => {
-
-    const { Option } = Select
-    function handleChange(value) {
-        console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-      }
-
-    const { isOpen, onClose, selectedCalendar, reFetchData, inRadioProgram } = props;
+    const {isOpen, onClose, selectedCalendar, reFetchData, inRadioProgram} = props;
 
     const adTree = useRef('');
 
@@ -25,8 +19,6 @@ const RepeatCalendar = React.memo((props) => {
     const titleCalendar = useRef('');
 
     const [isLoading, setIsLoading] = useState(false);
-
-    console.log(dateArrays)
 
     const handleBeforeOk = () => {
         const { province, districts, wards, selected } = adTree.current;
@@ -61,7 +53,7 @@ const RepeatCalendar = React.memo((props) => {
     };
 
     return (
-        <Modal isOpen={isOpen} style={{ maxWidth: '750px', overflow: 'auto' }}>
+        <Modal isOpen={isOpen} style={{maxWidth: '750px', overflow: 'auto'}}>
             <ModalHeader toggle={onClose}>
                 Lặp lịch: " {selectedCalendar?.adTree?.title} "
                 ngày {moment(selectedCalendar?.dateSchedule).format("DD/MM/YYYY")}
@@ -99,16 +91,7 @@ const RepeatCalendar = React.memo((props) => {
                             </div>
                         </Row>
                         <Row className="px-3 py-1 modal_repeat-date-calendar">
-                            <CustomCalendar dateArrays={dateArrays} />
-                            <Select
-    labelInValue
-    defaultValue={{ value: 'lucy' }}
-    style={{ width: 120 }}
-    onChange={handleChange}
-  >
-    <Option value="jack">Jack (100)</Option>
-    <Option value="lucy">Lucy (101)</Option>
-  </Select>
+                            <CustomCalendar dateArrays={dateArrays}/>
                         </Row>
                     </div>
                 </Row>
@@ -132,7 +115,7 @@ const RepeatCalendar = React.memo((props) => {
                     Xác nhận
                     {
                         isLoading &&
-                        <Spinner size="sm" className="ml-1" />
+                        <Spinner size="sm" className="ml-1"/>
                     }
                 </Button>
             </ModalFooter>

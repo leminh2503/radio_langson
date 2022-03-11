@@ -52,6 +52,7 @@ const CustomInput = React.memo(({
                             visible &&
                             <option
                                 value={id}
+                                title={title}
                                 key={index}
                             >
                                 {title}
@@ -181,6 +182,14 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
                 // {id: 1, title: "Đài Tỉnh", visible: division === 2 || division === 3},
                 // {id: 2, title: "Đài Huyện", visible: division === 3}
             ]
+        },
+        {
+            visible: Number(data?.typeRadio) === 0,
+            label: options[data?.typeRadio]?.label,
+            type: 'select',
+            keyValue: "location",
+            required: true,
+            options: options[data?.typeRadio]?.data
         }
     ];
 
@@ -218,7 +227,8 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
                 if (res) {
                     setData(prev => ({
                         ...prev,
-                        location: res[0]?.id
+                        location: res[0]?.id,
+                        titleL: res[0]?.title
                     }))
                 } else {
                     setData(prev => ({
@@ -289,7 +299,6 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
             }
         }, setIsLoading);
     };
-
     return (
         <Modal isOpen={isOpen}>
             <ModalHeader toggle={onClose}>

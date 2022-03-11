@@ -84,6 +84,7 @@ const SCHEDULE_MESSAGE = {
     SCHEDULE111V: 'Thời gian bắt đầu, kết thúc không phù hợp',
     SCHEDULE002P: 'Lịch đang tạm khóa',
     SCHEDULE080: 'Có quá nhiều chương trình đang trực tiếp',
+    SCHEDULE044P: 'Không thể sửa chương trình đã phát sóng',
 };
 
 const VALID_MESSAGE = {

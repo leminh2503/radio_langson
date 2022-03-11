@@ -40,8 +40,6 @@ const ScheduleDashboard = () => {
     };
 
     const codeCurrentDay = checkCodeDay(momentDay);
-
-    console.log(prevCodeDay)
     useEffect(() => {
         if (codeDay === 0) {
             return;
@@ -53,7 +51,7 @@ const ScheduleDashboard = () => {
             date_schedule__lt: dateCheck.add(1, 'days').format('YYYY-MM-DD')
         }, (err, res) => {
             if (res) {
-                if(administrativeCode?.code === 1){
+                if(res.length > 1){
                     apiProgram.listProgram({
                         broadcast_calendar: res[1]?.id
                     }, (err1, res1) => {
@@ -79,6 +77,8 @@ const ScheduleDashboard = () => {
                                 dateSchedule: res[0]?.dateSchedule,
                                 schedule: res1
                             }));
+                        } else {
+                            setCodeDay(prevCodeDay.current)
                         }
                     });
                 }
@@ -96,7 +96,7 @@ const ScheduleDashboard = () => {
             date_schedule__lt: nextDay
         }, (err, res) => {
             if (res) {
-                if(administrativeCode?.code === 1){
+                if(res.length > 1){
                     apiProgram.listProgram({
                         broadcast_calendar: res[1]?.id
                     }, (err1, res1) => {
@@ -122,6 +122,8 @@ const ScheduleDashboard = () => {
                                 dateSchedule: res[0]?.dateSchedule,
                                 schedule: res1
                             }));
+                        } else {
+                            setCodeDay(prevCodeDay.current)
                         }
                     });
                 }
@@ -129,8 +131,6 @@ const ScheduleDashboard = () => {
         });
         setCodeDay(codeCurrentDay);
     }, []);
-
-    console.log(data)
 
     return (
         <Card className="flex-fill w-100 box-shadow_custom" style={{'height': '550px'}}>

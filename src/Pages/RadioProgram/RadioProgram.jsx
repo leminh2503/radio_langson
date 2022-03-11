@@ -163,6 +163,7 @@ const RadioProgram = React.memo(() => {
                 />
             </SidebarBase>
             <Schedule
+                fetchProgramContinuously={fetchProgramContinuously}
                 scheduleObj={scheduleObj}
                 stateRef={stateRef}
                 historyState={history.location.state}

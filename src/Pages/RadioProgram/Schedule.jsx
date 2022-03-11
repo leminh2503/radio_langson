@@ -28,7 +28,8 @@ const Schedule = React.memo((props) => {
         scheduleObj,
         disabledSchedule,
         isEmeCalendar,
-        selectedCalendar
+        selectedCalendar,
+        fetchProgramContinuously
     } = props;
 
     const {WAIT_FOR_CONFIRM_LEVEL_1, WAIT_FOR_CONFIRM_LEVEL_2, CONFIRMED_1, CONFIRMED_2, CANCEL} = _statusCalendar;
@@ -46,6 +47,7 @@ const Schedule = React.memo((props) => {
     const isDefaultCalendar = selectedCalendar?.defaultCalendar;
 
     const ownerData = useRef(_ownerData(division)).current;
+
 
     // State
     const [state, setState] = useState({isChangedStatusCalendar: 0});
@@ -251,6 +253,7 @@ const Schedule = React.memo((props) => {
                 </Row>
             </Row>
             <Timeline
+                fetchProgramContinuously={fetchProgramContinuously}
                 scheduleObj={scheduleObj}
                 ownerData={ownerData}
                 stateRef={stateRef}

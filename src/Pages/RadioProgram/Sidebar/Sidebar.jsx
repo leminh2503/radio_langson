@@ -141,6 +141,11 @@ const Sidebar = React.memo((props) => {
                     isLoading: false,
                     data: convertDataFiles(res)
                 }));
+            } else {
+                setTreeData(prev => ({
+                    ...prev,
+                    isLoading: false
+                }))
             }
         });
     };
@@ -148,6 +153,10 @@ const Sidebar = React.memo((props) => {
     // Upload file function
     const handleOpenModalUpload = () => {
         const folder = treeData.selectedItem;
+        if(folder?.type === 'file') {
+            Notify.error('Chọn 1 thư mục trước')
+        }
+
         if (folder === null) {
             Notify.error('Chọn 1 thư mục trước');
             return;
@@ -303,8 +312,8 @@ const Sidebar = React.memo((props) => {
                     </Button>
                 </div>
                 <div className="mb-2 m-1">
-                    <Input.Search
-                        loading={treeData.isLoading}
+                    <Input
+                        loading={treeData.isLoading ? 'true' : 'false'}
                         onChange={onChangeSearch}
                         onSearch={onSearch}
                         placeholder="Tìm kiếm File (tag, tên file)..."

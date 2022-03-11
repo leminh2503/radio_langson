@@ -173,7 +173,7 @@ const Main = React.memo(props => {
                         setSelectedRow(record?.id);
                         return;
                     }
-                    setSelectedRow([]);
+                    setSelectedRow(null);
                 },
                 onDoubleClick: () => {
                     if (selectedRow === null) {

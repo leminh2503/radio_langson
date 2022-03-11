@@ -166,7 +166,7 @@ const SearchBox = (props) => {
     if (!visible) return null;
 
     return (
-        <Input.Search
+        <Input
             defaultValue={searchString}
             placeholder="Tìm kiếm tài khoản..."
             onSearch={onSearchString}

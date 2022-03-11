@@ -884,7 +884,7 @@ const ContentManagement = React.memo(() => {
                         }
                     </Row>
                     <div className="search_box">
-                        <Input.Search
+                        <Input
                             onChange={onChangeSearch}
                             loading={state.isLoading}
                             onSearch={onSearch}
