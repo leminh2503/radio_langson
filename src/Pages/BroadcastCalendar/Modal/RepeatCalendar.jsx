@@ -1,6 +1,6 @@
-import React, {useRef, useState}                                     from 'react';
+import React, {useRef, useState, useEffect}                                     from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from "reactstrap";
-import {Image, Input, Row}                                           from "antd";
+import {Image, Input, Row, Select}                                           from "antd";
 import moment                                                        from "moment";
 
 import ImageSchedule      from "../../../Assets/icon/schedule.png";
@@ -90,8 +90,11 @@ const RepeatCalendar = React.memo((props) => {
                                 </Row>
                             </div>
                         </Row>
+
                         <Row className="px-3 py-1 modal_repeat-date-calendar">
-                            <CustomCalendar dateArrays={dateArrays}/>
+                            <CustomCalendar
+                                dateArrays={dateArrays}
+                            />
                         </Row>
                     </div>
                 </Row>

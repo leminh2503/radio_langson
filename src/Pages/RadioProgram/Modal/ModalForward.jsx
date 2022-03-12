@@ -228,7 +228,7 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
                     setData(prev => ({
                         ...prev,
                         location: res[0]?.id,
-                        titleL: res[0]?.title
+                        title: res[0]?.title
                     }))
                 } else {
                     setData(prev => ({
@@ -289,7 +289,7 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
         onChange({
             date_loop: dateArrays.current.length > 0 ? dateArrays.current : undefined,
             id: typeModal === 'edit' ? data?.id : undefined,
-            title: 'Tiếp sóng',
+            title: `Tiếp Sóng `,
             timeStart: data?.datetimeStart.format(dateFormat) ?? null,
             timeEnd: data?.datetimeEnd.format(dateFormat) ?? null,
             sourceStream: {
@@ -299,6 +299,7 @@ const ModalForward = React.memo(({isOpen, onClose, onChange, typeModal, dataEdit
             }
         }, setIsLoading);
     };
+
     return (
         <Modal isOpen={isOpen}>
             <ModalHeader toggle={onClose}>

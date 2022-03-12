@@ -80,7 +80,7 @@ const SCHEDULE_MESSAGE = {
     SCHEDULE011P: 'Thao tác bị từ chối do không đúng trạng thái của lịch',
     SCHEDULE071P: 'Không thể kết thúc, vui lòng kiểm tra lại trạng thái chương trình',
     SCHEDULE072P: 'Chỉ có người tạo mới có thể thao tác',
-    SCHEDULE102V: 'Thời gian bắt đầu, kết thúc không phù hợp',
+    SCHEDULE102V: 'Thời gian bắt đầu không phù hợp',
     SCHEDULE111V: 'Thời gian bắt đầu, kết thúc không phù hợp',
     SCHEDULE002P: 'Lịch đang tạm khóa',
     SCHEDULE080: 'Có quá nhiều chương trình đang trực tiếp',

@@ -123,6 +123,8 @@ function Timeline(props) {
         JSON.parse(localStorage.getItem("configTimeline")) ?? {size: 100, lines: 6}
     );
 
+    const now = moment()
+
     const [dataOverride, setDataOverride] = useState({
         dataRequest: {},
         dataResponse: []
@@ -175,6 +177,8 @@ function Timeline(props) {
         });
     };
 
+    console.log(selectedProgram)
+
     const handleEditProgram = (dataModal, setIsLoadingModal) => {
         const dataRequest = {
             ...dataModal,
@@ -217,8 +221,13 @@ function Timeline(props) {
         });
     };
 
+
+
     const handleDeleteProgram = () => {
         if (selectedProgram.current === null) return;
+        if(moment() - selectedProgram.current?.datetimeEnd > 0){
+            return Notify.error('Không thể xóa chương trình đã phát')
+        }
         closeDialogSchedule();
         Alert.confirm(`Xác nhận xóa chương trình: ${selectedProgram.current?.title} ?`, (check) => {
             if (check) {
@@ -240,6 +249,9 @@ function Timeline(props) {
     };
 
     const handleOpenModalEditProgram = () => {
+        if(moment() - selectedProgram.current?.datetimeEnd > 0){
+            return Notify.error('Không thể chỉnh sửa chương trình đã phát')
+        }
         closeDialogSchedule();
         if (selectedProgram.current?.sourceStream?.file) {
             openModalEdit();
@@ -286,6 +298,9 @@ function Timeline(props) {
     };
 
     const handleLockProgram = () => {
+        if(moment() - selectedProgram.current?.datetimeEnd > 0){
+            return Notify.error('Không thể khóa chương trình đã phát')
+        }
         closeDialogSchedule();
         Modal.confirm({
             title: 'Nhắc nhở',
@@ -560,7 +575,7 @@ function Timeline(props) {
     const majorMinorSlotTemplate = (props) => moment(props.date).format("HH:mm");
 
     const customHeaderQuickPopups = (props) => {
-        const visibleButton = !isEmeCalendar && !isDefaultCalendar;
+        const visibleButton = (!isEmeCalendar && !isDefaultCalendar);
         const listButtonsHeaderQuickPopup =
             isEmeCalendar || [..._emeStatus, ..._liveStatus].includes(props.sourceStream?.sourceType) ?
                 listButtonsHeaderQuickPopupProgramEmeLiveCalendar({

@@ -1,13 +1,21 @@
-import React, {useRef, useState} from 'react';
-import {Calendar, Divider}       from "antd";
+import React, {useRef, useState, useEffect} from 'react';
+import {Calendar, Divider, Select} from "antd";
 import moment                    from "moment";
-import {cloneDeep}               from "lodash";
+import {cloneDeep, dropRight}               from "lodash";
 import {FormGroup}               from "reactstrap";
 
 const CustomCalendar = React.memo(({dateArrays}) => {
+
+    const { Option } = Select;
+
     const isChangePanel = useRef(false);
 
     const currentDateTime = useRef(moment());
+
+    const [data, setData] = useState({
+        value: 0,
+        preValue: 0
+    })
 
     const [state, setState] = useState({
         dateArray: [],
@@ -16,6 +24,31 @@ const CustomCalendar = React.memo(({dateArrays}) => {
         t_7cn: false,
         t_full: false
     });
+
+    useEffect(() => {
+
+        if(data?.value < data?.preValue) {
+            const dateArray = cloneDeep(state?.dateArray);
+            const count = data?.preValue - data?.value;
+            const dateArrayNew = dropRight(dateArray, count)
+            setState(prev => ({
+                ...prev,
+                dateArray: dateArrayNew
+            }));
+            dateArrays.current = dateArrayNew;
+            return;
+        }
+        if(data?.value > 0) {
+            const dateArray = []
+            for(let i = 1; i <= data?.value; i++) {
+                const now = moment();
+                let nextDay = now.add(i, 'days');
+                dateArray.push(nextDay)
+                setState(prev => ({...prev, dateArray}));
+                dateArrays.current = dateArray;
+            }
+        }
+     }, [data])
 
     // const onClickLoopDate = () => {
     //     if (state.isLoop) {
@@ -30,6 +63,7 @@ const CustomCalendar = React.memo(({dateArrays}) => {
     // };
 
     const handleChangeDate = (date) => {
+
         if (isChangePanel.current) {
             isChangePanel.current = false;
             return;
@@ -87,6 +121,23 @@ const CustomCalendar = React.memo(({dateArrays}) => {
                     <Divider>
                         Chọn ngày lặp
                     </Divider>
+                    <div className="d-flex justify-content-center">
+                        <Select
+                            defaultValue={0}
+                            className="my-3"
+                            style={{ width: '90%' }}
+                            onChange={(value) => {
+                            setData(prev => ({
+                                value,
+                                visible: true,
+                                preValue:  prev.value
+                            }))
+                        }}>
+                            <Option value={0} >Chưa Chọn</Option>
+                            <Option value={7} >Lặp 7 ngày tiếp theo</Option>
+                            <Option value={15} >Lặp 15 ngày tiếp theo</Option>
+                        </Select>
+                    </div>
                     <Calendar
                         className="custom-calendar"
                         fullscreen={false}

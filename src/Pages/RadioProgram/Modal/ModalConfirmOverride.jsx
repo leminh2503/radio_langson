@@ -22,6 +22,9 @@ const ModalConfirmOverride = React.memo(({
         setChecked(!checked);
     };
 
+
+    console.log(editedOverride.current)
+
     const handleCreateProgram = () => {
         if (!checked) {
             return Notify.error("Chưa xác nhận ghi đè");
@@ -39,11 +42,8 @@ const ModalConfirmOverride = React.memo(({
                     ...convertTime(res)
                 });
                 onCancel();
-                if (editedOverride.current.editMode) {
-                    closeModalEdit();
-                } else {
-                    closeModalCreate();
-                }
+                closeModalCreate();
+                closeModalEdit();
                 Notify.success(`${editedOverride.current.editMode ? 'Sửa' : 'Thêm'} chương trình thành công`);
             }
             setIsLoading(false);
